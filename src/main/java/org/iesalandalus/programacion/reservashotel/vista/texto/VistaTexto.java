@@ -22,13 +22,6 @@ public class VistaTexto extends Vista {
 
     public VistaTexto(){}
 
-    public void setControlador(Controlador controlador) throws NullPointerException {
-        if (controlador == null){
-            throw new NullPointerException("ERROR: El controlador no puede ser nulo.");
-        }
-        this.controlador = controlador;
-    }
-
     @Override
     public void comenzar() {
         try{
@@ -51,6 +44,7 @@ public class VistaTexto extends Vista {
     @Override
     public void terminar() {
         System.out.println("Final de la ejecución.");
+        controlador.terminar();
     }
 
     public void insertarHuesped() {
