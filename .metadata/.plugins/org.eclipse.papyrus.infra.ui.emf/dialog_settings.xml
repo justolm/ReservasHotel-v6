@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.papyrus.infra.ui.emf.providers.EMFGraphicalContentProvider_history__uml:Type:type">
+		<section name="History">
+			<list key="PreviousSelection">
+				<item value="platform:/resource/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.uml#_FDytwJ_8Ee6HLv0QYiv_ng"/>
+				<item value="platform:/resource/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.uml#_uJ-V0KJKEe6lWpeIxLaWbw"/>
+				<item value="platform:/resource/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.uml#_uKbo0aJKEe6lWpeIxLaWbw"/>
+				<item value="platform:/resource/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.uml#_f_cGILi5Ee6jxo_fmKIu8Q"/>
+				<item value="platform:/resource/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.uml#_yCoDQMhmEe67l_z3cjfv3A"/>
+				<item value="platform:/resource/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.uml#_59TMEMhsEe67l_z3cjfv3A"/>
+				<item value="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+				<item value="pathmap://UML_LIBRARIES/EcorePrimitiveTypes.library.uml#EString"/>
+			</list>
+		</section>
+	</section>
+	<section name="org.eclipse.papyrus.infra.ui.emf.providers.EMFGraphicalContentProvider_history__uml:Behavior:method">
+	</section>
+	<section name="org.eclipse.papyrus.infra.ui.emf.providers.EMFGraphicalContentProvider_history__platform:/resource/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.uml:uml:Type:type">
+		<section name="History">
+			<list key="PreviousSelection">
+				<item value="platform:/resource/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.uml#_uJ-V0KJKEe6lWpeIxLaWbw"/>
+				<item value="platform:/resource/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.uml#_niJwANh-Ee6a6Lx_-6VKsQ"/>
+				<item value="platform:/resource/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.uml#_f_cGILi5Ee6jxo_fmKIu8Q"/>
+				<item value="platform:/resource/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.uml#_FDytwJ_8Ee6HLv0QYiv_ng"/>
+			</list>
+		</section>
+	</section>
+</section>

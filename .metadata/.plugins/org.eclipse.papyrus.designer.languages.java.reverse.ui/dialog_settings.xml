@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.uml:DISPLAY_MODEL" value="true"/>
+	<item key="/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.uml:DISPLAY_PACKAGES" value="false"/>
+	<item key="/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.uml:DISPLAY_CU" value="false"/>
+	<item key="/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.umlReservasHotel_v4:projectName" value="ReservasHotel_v4"/>
+	<item key="/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.umlReservasHotel_v4:selectedParserIndex" value="1"/>
+	<list key="/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.umlReservasHotel_v4:searchpaths">
+		<item value="java"/>
+		<item value="*"/>
+		<item value="osgi.*"/>
+		<item value="datatype"/>
+	</list>
+	<list key="/ReservasHotel_v4/src/main/resources/uml/ReservasHotel_v3.umlReservasHotel_v4:creationpaths">
+		<item value="java.* ; ; java"/>
+		<item value="org.eclipse.papyrus.* ; ; *"/>
+		<item value="org.eclipse.* ; org.eclipse.papyrus.* ; *"/>
+		<item value=" org.osgi.* ; ; osgi.*"/>
+		<item value=" datatype.* ; ; datatype"/>
+	</list>
+</section>
