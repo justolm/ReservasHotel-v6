@@ -3,6 +3,7 @@ package org.iesalandalus.programacion.reservashotel.vista.texto;
 import org.bson.codecs.configuration.CodecConfigurationException;
 import org.iesalandalus.programacion.reservashotel.controlador.Controlador;
 import org.iesalandalus.programacion.reservashotel.modelo.dominio.*;
+import org.iesalandalus.programacion.reservashotel.vista.Vista;
 import org.iesalandalus.programacion.utilidades.Entrada;
 
 import javax.naming.OperationNotSupportedException;
@@ -15,7 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-public class VistaTexto {
+public class VistaTexto extends Vista {
     private Controlador controlador;
     private boolean datosInicializados = false; // Para comprobar si ya se han inicializado los datos previamente.
 
@@ -28,6 +29,7 @@ public class VistaTexto {
         this.controlador = controlador;
     }
 
+    @Override
     public void comenzar() {
         try{
             Opcion opcion = null;
@@ -46,6 +48,7 @@ public class VistaTexto {
         }
     }
 
+    @Override
     public void terminar() {
         System.out.println("Final de la ejecución.");
     }
