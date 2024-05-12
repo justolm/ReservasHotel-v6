@@ -4,9 +4,9 @@ import org.iesalandalus.programacion.reservashotel.controlador.Controlador;
 import org.iesalandalus.programacion.reservashotel.vista.Vista;
 
 public class VistaGrafica extends Vista {
-    VistaGrafica instancia;
+    static VistaGrafica instancia;
 
-    public VistaGrafica getInstancia() {
+    public static VistaGrafica getInstancia() {
         if (instancia == null){
             instancia = new VistaGrafica();
         }
