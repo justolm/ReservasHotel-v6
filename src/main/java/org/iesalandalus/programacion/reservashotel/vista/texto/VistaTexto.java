@@ -17,10 +17,17 @@ import java.util.List;
 import java.util.Objects;
 
 public class VistaTexto extends Vista {
-    private Controlador controlador;
     private boolean datosInicializados = false; // Para comprobar si ya se han inicializado los datos previamente.
 
     public VistaTexto(){}
+
+    @Override
+    public void setControlador(Controlador controlador) {
+        if (getControlador() == null) {
+            System.out.println("ERROR: El getControlador() no puede ser nulo.");
+        }
+        super.setControlador(getControlador());
+    }
 
     @Override
     public void comenzar() {
@@ -44,14 +51,14 @@ public class VistaTexto extends Vista {
     @Override
     public void terminar() {
         System.out.println("Final de la ejecución.");
-        controlador.terminar();
+        getControlador().terminar();
     }
 
     public void insertarHuesped() {
         Huesped huesped;
         try {
             huesped = Consola.leerHuesped();
-            controlador.insertar(huesped);
+            getControlador().insertar(huesped);
             System.out.println("Huésped insertado correctamente.");
         } catch (OperationNotSupportedException | NullPointerException | IllegalArgumentException | ParseException e) {
             System.out.println(e.getMessage());
@@ -61,13 +68,13 @@ public class VistaTexto extends Vista {
     public void buscarHuesped() {
         Huesped huesped, huespedEncontrado;
         try {
-            if (!controlador.getHuespedes().isEmpty()){
+            if (!getControlador().getHuespedes().isEmpty()){
                 if (!datosInicializados){
                     inicializarDatos(); // Método creado para generar datos válidos para realizar pruebas.
                 }
             }
             huesped = Consola.getHuespedPorDni();
-            huespedEncontrado = controlador.buscar(huesped);
+            huespedEncontrado = getControlador().buscar(huesped);
             if (huespedEncontrado != null){
                 System.out.println("Huésped encontrado.");
                 System.out.println(huespedEncontrado);
@@ -86,7 +93,7 @@ public class VistaTexto extends Vista {
         Huesped huesped;
         try {
             huesped = Consola.getHuespedPorDni();
-            controlador.borrar(huesped);
+            getControlador().borrar(huesped);
             System.out.println("Huésped eliminado.");
         } catch (NullPointerException | IllegalArgumentException | OperationNotSupportedException e) {
             System.out.println(e.getMessage());
@@ -95,8 +102,8 @@ public class VistaTexto extends Vista {
 
     public void mostrarHuespedes() {
         try {
-            if (!controlador.getHuespedes().isEmpty()){
-                List<Huesped> listadoHuespedes = controlador.getHuespedes();
+            if (!getControlador().getHuespedes().isEmpty()){
+                List<Huesped> listadoHuespedes = getControlador().getHuespedes();
                 for (int i = 0 ; i < listadoHuespedes.size() ; i++){
                     System.out.println(listadoHuespedes.get(i));
                 }
@@ -113,7 +120,7 @@ public class VistaTexto extends Vista {
         try {
             Habitacion habitacion;
             habitacion = Consola.leerHabitacion();
-            controlador.insertar(habitacion);
+            getControlador().insertar(habitacion);
             System.out.println("Habitación insertada correctamente.");
         } catch (NullPointerException | IllegalArgumentException | OperationNotSupportedException e){
             System.out.println(e.getMessage());
@@ -124,7 +131,7 @@ public class VistaTexto extends Vista {
         Habitacion habitacion, habitacionEncontrada;
         try {
             habitacion = Consola.leerHabitacionPorIdentificador();
-            habitacionEncontrada = controlador.buscar(habitacion);
+            habitacionEncontrada = getControlador().buscar(habitacion);
             if (habitacionEncontrada != null){
                 System.out.println("Habitación encontrada.");
                 System.out.println(habitacionEncontrada);
@@ -138,7 +145,7 @@ public class VistaTexto extends Vista {
         Habitacion habitacion;
         try {
             habitacion = Consola.leerHabitacionPorIdentificador();
-            controlador.borrar(habitacion);
+            getControlador().borrar(habitacion);
             System.out.println("Habitación borrada.");
         } catch (NullPointerException | IllegalArgumentException | OperationNotSupportedException e){
             System.out.println(e.getMessage());
@@ -147,8 +154,8 @@ public class VistaTexto extends Vista {
 
     public void mostrarHabitaciones() {
         try {
-            if(!controlador.getHabitaciones().isEmpty()){
-                List<Habitacion> ListadoHabitaciones = controlador.getHabitaciones();
+            if(!getControlador().getHabitaciones().isEmpty()){
+                List<Habitacion> ListadoHabitaciones = getControlador().getHabitaciones();
                 ListadoHabitaciones.sort(Comparator.comparing(Habitacion::getPlanta).thenComparing(Habitacion::getPuerta));
                 for (Habitacion habitacion : ListadoHabitaciones){
                     System.out.println(habitacion);
@@ -182,7 +189,7 @@ public class VistaTexto extends Vista {
             }
             habitacion = consultarDisponibilidad(tipoHabitacion, reserva.getFechaInicioReserva(), reserva.getFechaFinReserva());
             if (habitacion != null){
-                Huesped huesped = controlador.buscar(reserva.getHuesped());
+                Huesped huesped = getControlador().buscar(reserva.getHuesped());
                 Regimen regimen = reserva.getRegimen();
                 LocalDate fechaInicio = reserva.getFechaInicioReserva();
                 if (fechaInicio.isBefore(LocalDate.now())) {
@@ -193,7 +200,7 @@ public class VistaTexto extends Vista {
                     throw new IllegalArgumentException("ERROR: La fecha de inicio de la reserva no puede ser anterior al día de hoy.");
                 }
                 int numPersonas = reserva.getNumeroPersonas();
-                controlador.insertar(new Reserva(huesped,habitacion,regimen,fechaInicio,fechaFin,numPersonas));
+                getControlador().insertar(new Reserva(huesped,habitacion,regimen,fechaInicio,fechaFin,numPersonas));
                 System.out.println("Reserva insertada correctamente.");
             }
             else {
@@ -221,8 +228,8 @@ public class VistaTexto extends Vista {
         }
         else {
             try {
-                if (!controlador.getReservas(huesped).isEmpty()){
-                    List<Reserva> listadoReservasHuesped = controlador.getReservas(huesped);
+                if (!getControlador().getReservas(huesped).isEmpty()){
+                    List<Reserva> listadoReservasHuesped = getControlador().getReservas(huesped);
                     listadoReservasHuesped.sort(Comparator.comparing(Reserva::getFechaInicioReserva).reversed().thenComparing(reserva -> reserva.getHabitacion().getPlanta()).thenComparing(reserva -> reserva.getHabitacion().getPuerta()));
                     for(Reserva reserva : listadoReservasHuesped){
                         System.out.println(reserva);
@@ -241,7 +248,7 @@ public class VistaTexto extends Vista {
         Habitacion habitacionIden, habitacion;
         TipoHabitacion tipoHabitacion;
         habitacionIden = Consola.leerHabitacionPorIdentificador();
-        habitacion = controlador.buscar(habitacionIden);
+        habitacion = getControlador().buscar(habitacionIden);
         if (habitacion instanceof Simple) {
             tipoHabitacion = TipoHabitacion.SIMPLE;
         }
@@ -297,9 +304,9 @@ public class VistaTexto extends Vista {
         }
         else {
             try {
-                if (!controlador.getReservas(tipoHabitacion).isEmpty()){
+                if (!getControlador().getReservas(tipoHabitacion).isEmpty()){
                     System.out.println("Reservas del tipo de habitación " + tipoHabitacion.name() + ": ");
-                    List<Reserva> ListadoReservasTipoHabitacion = controlador.getReservas(tipoHabitacion);
+                    List<Reserva> ListadoReservasTipoHabitacion = getControlador().getReservas(tipoHabitacion);
                     ListadoReservasTipoHabitacion.sort(Comparator.comparing(Reserva::getFechaInicioReserva).reversed().thenComparing(reserva -> reserva.getHuesped().getNombre()));
                     for (Reserva reserva : ListadoReservasTipoHabitacion){
                             System.out.println(reserva);
@@ -333,7 +340,7 @@ public class VistaTexto extends Vista {
         int reservasAnulables = 0, reservaIncorrecta=0, numEleccion;
         String eleccion;
         Huesped huesped = new Huesped(Consola.getHuespedPorDni());
-        List<Reserva> reservas1 = getReservasAnulables(controlador.getReservas(huesped));
+        List<Reserva> reservas1 = getReservasAnulables(getControlador().getReservas(huesped));
         if (reservas1 == null){
             throw new NullPointerException("ERROR: No hay reservas anulables para ese cliente.");
         } else if (reservas1.size() == 1) {
@@ -342,7 +349,7 @@ public class VistaTexto extends Vista {
                 eleccion = Entrada.cadena();
                 if (eleccion.equalsIgnoreCase("S")) {
                     try {
-                        controlador.borrar(reservas1.get(0));
+                        getControlador().borrar(reservas1.get(0));
                         System.out.println("Reserva eliminada.");
                     } catch (OperationNotSupportedException | NullPointerException e) {
                         System.out.println(e.getMessage());
@@ -366,7 +373,7 @@ public class VistaTexto extends Vista {
                     numEleccion = Entrada.entero();
                     reservaIncorrecta = 1;
                 } while (numEleccion > reservasAnulables-1 || numEleccion < 0);
-                controlador.borrar(reservas1.get(numEleccion));
+                getControlador().borrar(reservas1.get(numEleccion));
                 System.out.println("Reserva eliminada.");
             } catch (OperationNotSupportedException | NullPointerException e) {
                 System.out.println("ERROR:" + e.getMessage());
@@ -375,7 +382,7 @@ public class VistaTexto extends Vista {
     }
 
     public void mostrarReservas() throws NullPointerException, ParseException {
-        List<Reserva> reservas1 = controlador.getReservas();
+        List<Reserva> reservas1 = getControlador().getReservas();
         int numReservas = 0;
         if (reservas1.isEmpty()){
             throw new NullPointerException("ERROR: No hay reservas almacenadas.");
@@ -395,7 +402,7 @@ public class VistaTexto extends Vista {
         Habitacion habitacionDisponible = null;
         int numElementos;
 
-        List<Habitacion> habitacionesTipoSolicitado= controlador.getHabitaciones(tipoHabitacion);
+        List<Habitacion> habitacionesTipoSolicitado= getControlador().getHabitaciones(tipoHabitacion);
 
         if (habitacionesTipoSolicitado == null)
             return null;
@@ -405,7 +412,7 @@ public class VistaTexto extends Vista {
 
             if (habitacionesTipoSolicitado.get(i) != null)
             {
-                List<Reserva> reservasFuturas = controlador.getReservasFuturas(habitacionesTipoSolicitado.get(i));
+                List<Reserva> reservasFuturas = getControlador().getReservasFuturas(habitacionesTipoSolicitado.get(i));
                 numElementos = reservasFuturas.size();
 
                 if (numElementos == 0)
@@ -498,7 +505,7 @@ public class VistaTexto extends Vista {
         String confirmacion;
         int numOpcion, contador = 0;
         huesped=Consola.getHuespedPorDni();
-        reservas=controlador.getReservas(huesped);
+        reservas=getControlador().getReservas(huesped);
         if (reservas == null){
             throw new NullPointerException("ERROR: El cliente no tiene reservas.");
         }
@@ -535,7 +542,7 @@ public class VistaTexto extends Vista {
         }
         else {
             try {
-                controlador.realizarCheckin(reserva, fecha);
+                getControlador().realizarCheckin(reserva, fecha);
             } catch (NullPointerException | IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
@@ -550,7 +557,7 @@ public class VistaTexto extends Vista {
         String confirmacion;
         int numOpcion, contador=0;
         huesped = Consola.getHuespedPorDni();
-        reservas = controlador.getReservas(huesped);
+        reservas = getControlador().getReservas(huesped);
         if (reservas == null){
             throw new NullPointerException("ERROR: El cliente no tiene reservas.");
         }
@@ -583,7 +590,7 @@ public class VistaTexto extends Vista {
             throw new NullPointerException("ERROR: No se puede introducir una reserva nula.");
         }
         try {
-            controlador.realizarCheckout(reserva, fecha);
+            getControlador().realizarCheckout(reserva, fecha);
         } catch (NullPointerException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
@@ -598,13 +605,13 @@ public class VistaTexto extends Vista {
         Habitacion habitacion2 = new Doble(2,2,80,0,1);
         Reserva reserva = new Reserva(huesped, habitacion1, Regimen.MEDIA_PENSION, LocalDate.now(),LocalDate.now().plusDays(2),2);
         Reserva reserva1 = new Reserva(huesped, habitacion, Regimen.SOLO_ALOJAMIENTO, LocalDate.of(2024, 5, 13), LocalDate.of(2024, 5, 15), 1);
-        controlador.insertar(huesped);
-        controlador.insertar(huesped1);
-        controlador.insertar(habitacion);
-        controlador.insertar(habitacion1);
-        controlador.insertar(habitacion2);
-        controlador.insertar(reserva);
-        controlador.insertar(reserva1);
+        getControlador().insertar(huesped);
+        getControlador().insertar(huesped1);
+        getControlador().insertar(habitacion);
+        getControlador().insertar(habitacion1);
+        getControlador().insertar(habitacion2);
+        getControlador().insertar(reserva);
+        getControlador().insertar(reserva1);
         System.out.println("Datos inicializados. ");
         datosInicializados = true;
     }

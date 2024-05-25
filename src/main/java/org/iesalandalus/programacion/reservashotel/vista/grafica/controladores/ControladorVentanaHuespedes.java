@@ -19,6 +19,9 @@ import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.naming.OperationNotSupportedException;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,7 +32,7 @@ import java.util.List;
 
 import static org.iesalandalus.programacion.reservashotel.vista.grafica.VistaGrafica.getInstancia;
 
-public class ControladorVentanaHuespedes {
+public class ControladorVentanaHuespedes implements KeyListener {
     private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @FXML private TableView<Huesped> tvHuespedes;
@@ -44,29 +47,27 @@ public class ControladorVentanaHuespedes {
     @FXML private TextField tfBusquedaDNI;
     @FXML private Button btnBuscarHuesped;
     @FXML private Button btnLimpiarHuesped;
+    @FXML private Button btnVerReservasHuesped;
+    @FXML ControladorVentanaPrincipal controladorVentanaPrincipalenHuespedes; // Para poder lanzar la búsqueda de reservas de un huésped de vuelta.
 
-    // Ventana para añadir un huésped:
-    @FXML private Button btnAnadirAHuesped;
-    @FXML private Button btnCancelarAHuesped;
-    @FXML private TextField tfNombreAHuesped;
-    @FXML private TextField tfDNIAHuesped;
-    @FXML private TextField tfCorreoAHuesped;
-    @FXML private TextField tfTelefonoAHuesped;
-    @FXML private DatePicker dpFechaNacimientoAHuesped;
 
     private ObservableList<Huesped> obsHuespedes = FXCollections.observableArrayList();
 
-    private List<Huesped> coleccionHuespedes = new ArrayList<>();
+    List<Huesped> coleccionHuespedes = new ArrayList<>();
 
     private void cargaDatosHuesped() throws ParseException {
-        coleccionHuespedes.addAll(getInstancia().getControlador().getHuespedes());
+        coleccionHuespedes.addAll(VistaGrafica.getInstancia().getControlador().getHuespedes());
         obsHuespedes.setAll(coleccionHuespedes);
     }
 
     @FXML
-    private void inicializar() {
+    private void initialize() {
+        String error = "";
         try {
             cargaDatosHuesped();
+            if(tfBusquedaNombre.getText() != null) {
+                tfBusquedaNombre.textProperty().addListener((observable, valorViejo, valorNuevo) -> buscarDirecto(valorNuevo));
+            }
             tcNombre.setCellValueFactory(huesped -> new SimpleStringProperty(huesped.getValue().getNombre()));
             tcDNI.setCellValueFactory(huesped -> new SimpleStringProperty(huesped.getValue().getDni()));
             tcCorreo.setCellValueFactory(huesped -> new SimpleStringProperty(huesped.getValue().getCorreo()));
@@ -75,9 +76,11 @@ public class ControladorVentanaHuespedes {
             tvHuespedes.getSelectionModel().selectedItemProperty().addListener((observableValue, valorAnterior, valorNuevo) -> muestraHuespedSeleccionado(valorNuevo));
             tvHuespedes.setItems(obsHuespedes);
         } catch (ParseException e) {
-            System.out.println(e.getMessage());;
+            error=String.valueOf(e.getMessage());
         }
-
+        if (!error.isEmpty()) {
+            Dialogos.mostrarDialogoError("Hotel Al-Andalus - Huéspedes", error);
+        }
     }
 
     private void muestraHuespedSeleccionado(Huesped valorNuevo) {
@@ -87,7 +90,7 @@ public class ControladorVentanaHuespedes {
     @FXML
     void buscar(ActionEvent event) {
         List<Huesped> coleccionHuespedesFiltrada = new ArrayList<>();
-        if (tfBusquedaNombre.getText().isBlank() || tfBusquedaNombre.getText().isEmpty() || tfBusquedaDNI.getText().isBlank() || tfBusquedaDNI.getText().isEmpty()) {
+        if ((tfBusquedaNombre.getText().isBlank() || tfBusquedaNombre.getText().isEmpty()) && (tfBusquedaDNI.getText().isBlank() || tfBusquedaDNI.getText().isEmpty())) {
             obsHuespedes.setAll(coleccionHuespedes);
         }
         else if (tfBusquedaDNI.getText().isBlank() || tfBusquedaDNI.getText().isEmpty()){
@@ -123,15 +126,35 @@ public class ControladorVentanaHuespedes {
     }
 
     @FXML
-    void limpiar (ActionEvent event) {
-        tfBusquedaDNI.clear();
-        tfBusquedaNombre.clear();
+    void buscarDirecto(String busqueda) {
+        List<Huesped> coleccionHuespedesFiltroDirecto = new ArrayList<>();
+        if (tfBusquedaNombre.getText().isBlank() && tfBusquedaNombre.getText().isEmpty()){
+            obsHuespedes.setAll(coleccionHuespedes);
+        }
+        else {
+            busqueda = tfBusquedaNombre.getText().toLowerCase();
+            for (Huesped huesped : coleccionHuespedes) {
+                if (huesped.getNombre().toLowerCase().contains(busqueda)) {
+                    coleccionHuespedesFiltroDirecto.add(huesped);
+                }
+            }
+            obsHuespedes.clear();
+            obsHuespedes.setAll(coleccionHuespedesFiltroDirecto);
+        }
     }
 
     @FXML
-    void eliminarHuesped(ActionEvent event) {
+    void limpiar (ActionEvent event) {
+        tfBusquedaDNI.clear();
+        tfBusquedaNombre.clear();
+        obsHuespedes.setAll(coleccionHuespedes);
+    }
+
+    @FXML
+    void eliminarHuesped(ActionEvent event) throws OperationNotSupportedException {
         Huesped huesped = tvHuespedes.getSelectionModel().getSelectedItem();
         if (huesped != null && Dialogos.mostrarDialogoConfirmacion("Hotel Al-Andalus - Borrar huésped","¿Está seguro de eliminar al huésped seleccionado?")) {
+            VistaGrafica.getInstancia().getControlador().borrar(huesped);
             coleccionHuespedes.remove(huesped);
             obsHuespedes.setAll(coleccionHuespedes);
             Dialogos.mostrarDialogoInformacion("Hotel Al-Andalus - Borrar huésped", "Huésped eliminado correctamente");
@@ -143,41 +166,70 @@ public class ControladorVentanaHuespedes {
 
     @FXML
     void anadirHuesped(ActionEvent event) {
-        FXMLLoader fxmlLoader = new FXMLLoader(LocalizadorRecursos.class.getResource("vistas/VentanaAnadirHuesped.fxml"));
-        ControladorVentanaHuespedes c = fxmlLoader.getController();
+        FXMLLoader fxmlLoader2 = new FXMLLoader(LocalizadorRecursos.class.getResource("vistas/ventanaAnadirHuesped.fxml"));
+        ControladorVentanaHuespedes c = fxmlLoader2.getController();
+        String error = "";
         try {
-            Parent raiz = fxmlLoader.load();
-            Scene escena = new Scene(raiz,600,400);
-            Stage escenario = new Stage();
-            escenario.setScene(escena);
-            escenario.initModality(Modality.APPLICATION_MODAL);
-            escenario.setTitle("Hotel Al-Andalus - Añadir Huésped");
-            escenario.setResizable(false);
-            escenario.showAndWait();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+            Parent raiz = fxmlLoader2.load();
+            Scene escenaAH = new Scene(raiz,600,400);
+            Stage escenarioAnadirHuesped = new Stage();
+            escenarioAnadirHuesped.setResizable(false);
+            escenarioAnadirHuesped.setScene(escenaAH);
+            escenarioAnadirHuesped.initModality(Modality.APPLICATION_MODAL);
+            escenarioAnadirHuesped.setTitle("Hotel Al-Andalus - Añadir Huésped");
+            escenarioAnadirHuesped.showAndWait();
+            obsHuespedes.clear();
+            coleccionHuespedes.clear();
+            cargaDatosHuesped();
+        } catch (IOException | ParseException e) {
+            error=String.valueOf(e.getMessage());
+        }
+        if (!error.isEmpty()) {
+            Dialogos.mostrarDialogoError("Hotel Al-Andalus - Insertar huésped", error);
         }
     }
 
-
-    // Parte correspondiente a la ventana para añadir huéspedes:
-    @FXML
-    void anadirAHuesped(ActionEvent event) {
-        Huesped huesped = new Huesped(tfNombreAHuesped.getText(),tfDNIAHuesped.getText(),tfCorreoAHuesped.getText(),tfTelefonoAHuesped.getText(),dpFechaNacimientoAHuesped.getValue());
-        if (!coleccionHuespedes.contains(huesped)) {
-            coleccionHuespedes.add(huesped);
-            obsHuespedes.setAll(coleccionHuespedes);
-            Dialogos.mostrarDialogoConfirmacion("Hotel Al-Andalus - Insertar huésped", "Huésped insertado correctamente.");
+    public void verReservas(ActionEvent event) {
+        Huesped huesped = tvHuespedes.getSelectionModel().getSelectedItem();
+        if (huesped != null && Dialogos.mostrarDialogoConfirmacion("Hotel Al-Andalus - Reservas huésped","¿Quiere buscar las reservas del huésped seleccionado?")){
+            controladorVentanaPrincipalenHuespedes.filtrarPorHuesped(huesped.getDni());
+            ((Stage) btnBuscarHuesped.getScene().getWindow()).close();
         }
-        else {
-            Dialogos.mostrarDialogoError("Hotel Al-Andalus - Insertar huésped", "El huésped introducido ya se encuentra en el listado.");
-        }
-        ((Stage) btnAnadirAHuesped.getScene().getWindow()).close();
     }
 
+    // Recibo el controlador de la ventana principal para poder enviar el filtrado por huésped.
     @FXML
-    void cancelarAHuesped(ActionEvent event) {
-        ((Stage) btnCancelarAHuesped.getScene().getWindow()).close();
+    public void recibeControlador(ControladorVentanaPrincipal controladorVentanaPrincipal) {
+        controladorVentanaPrincipalenHuespedes = controladorVentanaPrincipal;
+    }
+
+
+    // Pruebas para intentar buscar usando la tecla enter
+    @Override
+    public void keyTyped(KeyEvent e) {
+        if (e.getSource() == tfBusquedaDNI){
+            if (KeyEvent.VK_A == e.getKeyCode()){
+                System.out.println("conseguido1!");
+            }
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getSource() == tfBusquedaDNI){
+            if (KeyEvent.VK_ESCAPE == e.getKeyCode()){
+                System.out.println("conseguido2!");
+            }
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    //    if (e.getSource() == tfBusquedaDNI){
+            if (KeyEvent.VK_E == e.getKeyCode()){
+                System.out.println("conseguido3!");
+            }
+     //   }
     }
 
 }

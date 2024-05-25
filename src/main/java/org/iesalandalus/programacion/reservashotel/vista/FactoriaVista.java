@@ -13,7 +13,7 @@ public enum FactoriaVista {
     GRAFICA {
         @Override
         public Vista crear() {
-            return new VistaGrafica();
+            return VistaGrafica.getInstancia();
         }
     };
 

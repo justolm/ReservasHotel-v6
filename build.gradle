@@ -27,8 +27,8 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-    mainModule = 'org.iesalandalus.programacion.reservashotel'
-    mainClass = 'org.iesalandalus.programacion.reservashotel.ReservasHotel-v5'
+    mainModule = 'org.iesalandalus.programacion.reservashotel.vista.grafica'
+    mainClass = 'org.iesalandalus.programacion.reservashotel.ReservasHotel_v5'
 }
 
 javafx {

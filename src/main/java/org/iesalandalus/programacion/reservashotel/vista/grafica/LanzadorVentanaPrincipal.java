@@ -9,26 +9,33 @@ import javafx.stage.WindowEvent;
 import org.iesalandalus.programacion.reservashotel.vista.grafica.recursos.LocalizadorRecursos;
 import org.iesalandalus.programacion.reservashotel.vista.grafica.utilidades.Dialogos;
 
+import java.io.IOException;
+
 public class LanzadorVentanaPrincipal extends Application {
 
     public static void comenzar() {
-        launch();
+        launch(LanzadorVentanaPrincipal.class);
     }
 
     @Override
-    public void start(Stage escenarioPrincipal) throws Exception {
+    public void start(Stage escenarioPrincipal) {
         FXMLLoader fxmlLoader = new FXMLLoader(LocalizadorRecursos.class.getResource("vistas/ventanaPrincipal.fxml"));
-        Parent raiz=fxmlLoader.load();
-        Scene scene = new Scene(raiz, 900, 600);
-        escenarioPrincipal.setTitle("Reservas Hotel IES Al-Andalus");
-        escenarioPrincipal.setScene(scene);
-        escenarioPrincipal.setOnCloseRequest(e->confirmarSalida(escenarioPrincipal,e));
-        escenarioPrincipal.show();
+        try {
+            Parent raiz=fxmlLoader.load();
+            Scene scene = new Scene(raiz, 900, 600);
+            escenarioPrincipal.setResizable(false);
+            escenarioPrincipal.setTitle("Reservas Hotel IES Al-Andalus");
+            escenarioPrincipal.setScene(scene);
+            escenarioPrincipal.setOnCloseRequest(e->confirmarSalida(escenarioPrincipal,e));
+            escenarioPrincipal.show();
+        } catch (RuntimeException | IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void confirmarSalida(Stage escenario, WindowEvent e)
     {
-        if (Dialogos.mostrarDialogoConfirmacion("Reservas Hotel", "¿Estas seguro que quieres salirte de la aplicación?")) {
+        if (Dialogos.mostrarDialogoConfirmacion("Reservas Hotel", "Â¿Estas seguro que quieres salirte de la aplicaciÃ³n?")) {
             escenario.close();
         }
         else
