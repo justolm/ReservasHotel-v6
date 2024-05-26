@@ -2,7 +2,9 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -17,15 +19,21 @@
          <children>
             <TableView fx:id="tvHabitaciones" layoutX="-1.0" prefHeight="414.0" prefWidth="898.0">
               <columns>
-                <TableColumn fx:id="tcIdentificador" prefWidth="112.0" text="Identificador" />
-                <TableColumn fx:id="tcPlantaPuerta" prefWidth="112.0" text="Planta - puerta" />
-                  <TableColumn fx:id="tcTipo" prefWidth="112.0" text="Tipo" />
-                  <TableColumn fx:id="tcCamasIndividuales" prefWidth="113.0" text="Camas Individuales" />
-                  <TableColumn fx:id="tcCamasDobles" prefWidth="112.0" text="Camas dobles" />
-                  <TableColumn fx:id="tcBanos" prefWidth="112.0" text="Baños" />
-                  <TableColumn fx:id="tcJacuzzi" prefWidth="112.0" text="Jacuzzi" />
-                  <TableColumn fx:id="tcPrecio" prefWidth="112.0" text="Precio" />
+                <TableColumn fx:id="tcIdentificador" editable="false" prefWidth="112.0" resizable="false" style="-fx-alignment: CENTER;" text="Identificador" />
+                <TableColumn fx:id="tcPlantaPuerta" editable="false" prefWidth="112.0" resizable="false" style="-fx-alignment: CENTER;" text="Planta - puerta" />
+                  <TableColumn fx:id="tcTipo" editable="false" prefWidth="112.0" resizable="false" style="-fx-alignment: CENTER;" text="Tipo" />
+                  <TableColumn fx:id="tcCamasIndividuales" editable="false" prefWidth="113.0" resizable="false" style="-fx-alignment: CENTER;" text="Camas Individuales" />
+                  <TableColumn fx:id="tcCamasDobles" editable="false" prefWidth="112.0" resizable="false" style="-fx-alignment: CENTER;" text="Camas dobles" />
+                  <TableColumn fx:id="tcBanos" editable="false" prefWidth="112.0" resizable="false" style="-fx-alignment: CENTER;" text="Baños" />
+                  <TableColumn fx:id="tcJacuzzi" editable="false" prefWidth="112.0" resizable="false" style="-fx-alignment: CENTER;" text="Jacuzzi" />
+                  <TableColumn fx:id="tcPrecio" editable="false" prefWidth="110.0" resizable="false" style="-fx-alignment: CENTER;" text="Precio" />
               </columns>
+                <ContextMenu>
+                    <items>
+                        <MenuItem fx:id="miInsertarHabitacion" mnemonicParsing="false" onAction="#anadirHabitacion" text="Insertar Habitación" />
+                        <MenuItem fx:id="miEliminarHabitacion" mnemonicParsing="false" onAction="#eliminarHabitacion" text="Eliminar Habitación" />
+                    </items>
+                </ContextMenu>
             </TableView>
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="202.0" prefWidth="898.0">
@@ -73,17 +81,17 @@
                      <children>
                         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" VBox.vgrow="NEVER">
                            <children>
-                              <Button fx:id="btnAnadirHuesped" alignment="CENTER" mnemonicParsing="false" onAction="#anadirHuesped" prefWidth="100.0" text="Añadir" textAlignment="CENTER" />
+                              <Button fx:id="btnAnadirHabitacion" alignment="CENTER" mnemonicParsing="false" onAction="#anadirHabitacion" prefWidth="100.0" text="Añadir" textAlignment="CENTER" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="btnBorrarHuesped" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#eliminarHuesped" prefWidth="100.0" text="Eliminar" textAlignment="CENTER" />
+                              <Button fx:id="btnBorrarHabitacion" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#eliminarHabitacion" prefWidth="100.0" text="Eliminar" textAlignment="CENTER" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="btnVerReservasHuesped" contentDisplay="CENTER" mnemonicParsing="false" onAction="#verReservas" prefWidth="100.0" text="Ver reservas" textAlignment="CENTER" />
+                              <Button fx:id="btnVerReservasHabitacion" contentDisplay="CENTER" mnemonicParsing="false" onAction="#verReservas" prefWidth="100.0" text="Ver reservas" textAlignment="CENTER" />
                            </children>
                         </HBox>
                      </children>

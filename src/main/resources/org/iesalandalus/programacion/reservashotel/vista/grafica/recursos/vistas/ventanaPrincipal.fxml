@@ -55,14 +55,13 @@
         <Menu mnemonicParsing="false" text="Consultar">
           <items>
             <MenuItem fx:id="btnHuespedes" mnemonicParsing="false" onAction="#abrirVentanaHuespedes" text="Huéspedes" />
-            <MenuItem mnemonicParsing="false" text="Habitaciones" />
-            <MenuItem mnemonicParsing="false" text="Reservas" />
+            <MenuItem fx:id="btnHabitaciones" mnemonicParsing="false" onAction="#abrirVentanaHabitaciones" text="Habitaciones" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Añadir">
           <items>
             <MenuItem fx:id="btnAnadirHuesped" mnemonicParsing="false" onAction="#anadirHuespedMenu" text="Huésped" />
-            <MenuItem mnemonicParsing="false" text="Habitación" />
+            <MenuItem fx:id="btnAnadirHabitacion" mnemonicParsing="false" onAction="#anadirHabitacionMenu" text="Habitación" />
             <MenuItem mnemonicParsing="false" text="Reserva" />
           </items>
         </Menu>

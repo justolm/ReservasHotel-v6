@@ -19,7 +19,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +74,7 @@ public class ControladorVentanaPrincipal {
         controladorVentanaPrincipal=this;
         try {
             cargaDatosReservas();
+            tvReservas.setPlaceholder(new Label("No hay reservas para mostrar."));
             tcHuesped.setCellValueFactory(reserva -> new SimpleStringProperty(reserva.getValue().getHuesped().getNombre().concat(" - ").concat(reserva.getValue().getHuesped().getDni())));
             tcHabitacion.setCellValueFactory(reserva -> new SimpleStringProperty(reserva.getValue().getHabitacion().getIdentificador().concat(" - ").concat(reserva.getValue().getHabitacion().getClass().getSimpleName())));
             tcImporte.setCellValueFactory(reserva -> new SimpleStringProperty(Double.toString(reserva.getValue().getPrecio())));
@@ -200,6 +200,22 @@ public class ControladorVentanaPrincipal {
     }
 
     @FXML
+    void filtrarPorHabitacion(String identificador) {
+        List<Reserva> colecccionReservasFiltradaHabitacion = new ArrayList<>();
+        if (identificador.isEmpty() || identificador.isBlank()){
+            obsReservas.setAll(coleccionReservas);
+        }
+        else {
+            for (Reserva reserva : coleccionReservas) {
+                if (reserva.getHabitacion().getIdentificador().contains(identificador)) {
+                    colecccionReservasFiltradaHabitacion.add(reserva);
+                }
+            }
+            obsReservas.setAll(colecccionReservasFiltradaHabitacion);
+        }
+    }
+
+    @FXML
     void LimpiarFiltro(ActionEvent event) throws ParseException {
         obsReservas.setAll(coleccionReservas);
     }
@@ -207,6 +223,11 @@ public class ControladorVentanaPrincipal {
     @FXML
     void anadirHuespedMenu(ActionEvent event) {
         new ControladorVentanaHuespedes().anadirHuesped(new ActionEvent());
+    }
+
+    @FXML
+    void anadirHabitacionMenu(ActionEvent event) {
+        new ControladorVentanaHabitaciones().anadirHabitacion(new ActionEvent());
     }
 
     @FXML
@@ -237,7 +258,7 @@ public class ControladorVentanaPrincipal {
             escenarioHuespedes.initModality(Modality.APPLICATION_MODAL);
             escenarioHuespedes.setTitle("Hotel Al-Andalus - Huéspedes");
             ControladorVentanaHuespedes controladorVentanaHuespedesInstancia=(ControladorVentanaHuespedes)fxmlLoader.getController();
-            controladorVentanaHuespedesInstancia.recibeControlador(controladorVentanaPrincipal);
+            controladorVentanaHuespedesInstancia.recibeControladorHuespedes(controladorVentanaPrincipal);
             escenarioHuespedes.showAndWait();
 
         } catch (IOException e) {
@@ -253,5 +274,22 @@ public class ControladorVentanaPrincipal {
 
     @FXML
     void abrirVentanaHabitaciones(ActionEvent event){
+        FXMLLoader fxmlLoader = new FXMLLoader(LocalizadorRecursos.class.getResource("vistas/ventanaHabitaciones.fxml"));
+        ControladorVentanaHabitaciones c = fxmlLoader.getController();
+        try {
+            Parent raiz = fxmlLoader.load();
+            Scene escena = new Scene(raiz,900,600);
+            Stage escenarioHabitaciones = new Stage();
+            escenarioHabitaciones.setResizable(false);
+            escenarioHabitaciones.setScene(escena);
+            escenarioHabitaciones.initModality(Modality.APPLICATION_MODAL);
+            escenarioHabitaciones.setTitle("Hotel Al-Andalus - Habitaciones");
+            ControladorVentanaHabitaciones controladorVentanaHabitacionesInstancia=(ControladorVentanaHabitaciones)fxmlLoader.getController();
+            controladorVentanaHabitacionesInstancia.recibeControladorHabitaciones(controladorVentanaPrincipal);
+            escenarioHabitaciones.showAndWait();
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

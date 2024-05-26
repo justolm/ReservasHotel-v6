@@ -31,7 +31,6 @@ public class ControladorVentanaAnadirHuesped {
             Huesped huesped = new Huesped(tfNombreAHuesped.getText(),tfDNIAHuesped.getText(),tfCorreoAHuesped.getText(),tfTelefonoAHuesped.getText(),dpFechaNacimientoAHuesped.getValue());
             VistaGrafica.getInstancia().getControlador().insertar(huesped);
             Dialogos.mostrarDialogoConfirmacion("Hotel Al-Andalus - Insertar huésped", "Huésped insertado correctamente.");
-
             ((Stage) btnAnadirAHuesped.getScene().getWindow()).close();
         } catch (OperationNotSupportedException | ParseException | IllegalArgumentException | NullPointerException er) {
             error=String.valueOf(er.getMessage());

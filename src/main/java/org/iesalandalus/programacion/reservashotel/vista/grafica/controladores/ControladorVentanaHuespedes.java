@@ -65,6 +65,7 @@ public class ControladorVentanaHuespedes implements KeyListener {
         String error = "";
         try {
             cargaDatosHuesped();
+            tvHuespedes.setPlaceholder(new Label("No hay huéspedes para mostrar."));
             if(tfBusquedaNombre.getText() != null) {
                 tfBusquedaNombre.textProperty().addListener((observable, valorViejo, valorNuevo) -> buscarDirecto(valorNuevo));
             }
@@ -160,7 +161,7 @@ public class ControladorVentanaHuespedes implements KeyListener {
             Dialogos.mostrarDialogoInformacion("Hotel Al-Andalus - Borrar huésped", "Huésped eliminado correctamente");
         }
         if (huesped == null) {
-            Dialogos.mostrarDialogoAdvertencia("Hotel Al-Andalus - Borrar huésped", "Debe de seleccionar el huésped que desee eliminar.");
+            Dialogos.mostrarDialogoAdvertencia("Hotel Al-Andalus - Borrar huésped", "Debe seleccionar el huésped que desee eliminar.");
         }
     }
 
@@ -199,7 +200,7 @@ public class ControladorVentanaHuespedes implements KeyListener {
 
     // Recibo el controlador de la ventana principal para poder enviar el filtrado por huésped.
     @FXML
-    public void recibeControlador(ControladorVentanaPrincipal controladorVentanaPrincipal) {
+    public void recibeControladorHuespedes(ControladorVentanaPrincipal controladorVentanaPrincipal) {
         controladorVentanaPrincipalenHuespedes = controladorVentanaPrincipal;
     }
 
