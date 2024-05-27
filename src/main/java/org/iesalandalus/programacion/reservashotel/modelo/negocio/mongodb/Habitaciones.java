@@ -8,8 +8,10 @@ import org.bson.Document;
 import org.iesalandalus.programacion.reservashotel.modelo.dominio.*;
 import org.iesalandalus.programacion.reservashotel.modelo.negocio.IHabitaciones;
 import org.iesalandalus.programacion.reservashotel.modelo.negocio.mongodb.utilidades.MongoDB;
+import org.iesalandalus.programacion.reservashotel.vista.grafica.VistaGrafica;
 
 import javax.naming.OperationNotSupportedException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,10 +99,13 @@ public class Habitaciones implements IHabitaciones {
         return null;
     }
 
-    public void borrar (Habitacion habitacion) throws OperationNotSupportedException, NullPointerException {
+    public void borrar (Habitacion habitacion) throws OperationNotSupportedException, NullPointerException, ParseException, IllegalArgumentException {
         if (habitacion==null)
             throw new NullPointerException("ERROR: No se puede borrar una habitación nula.");
         Document docHabitacion = coleccionHabitaciones.find(Filters.eq(MongoDB.IDENTIFICADOR,habitacion.getIdentificador())).first();
+        if (!VistaGrafica.getInstancia().getControlador().getReservas(habitacion).isEmpty()) {
+            throw new IllegalArgumentException("ERROR: No se puede eliminar una habitación que tenga reservas.");
+        }
         if (docHabitacion != null){
             coleccionHabitaciones.deleteOne(docHabitacion);
         }

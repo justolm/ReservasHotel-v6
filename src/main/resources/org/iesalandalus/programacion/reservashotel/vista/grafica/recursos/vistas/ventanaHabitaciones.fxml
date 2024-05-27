@@ -28,12 +28,14 @@
                   <TableColumn fx:id="tcJacuzzi" editable="false" prefWidth="112.0" resizable="false" style="-fx-alignment: CENTER;" text="Jacuzzi" />
                   <TableColumn fx:id="tcPrecio" editable="false" prefWidth="110.0" resizable="false" style="-fx-alignment: CENTER;" text="Precio" />
               </columns>
-                <ContextMenu>
-                    <items>
-                        <MenuItem fx:id="miInsertarHabitacion" mnemonicParsing="false" onAction="#anadirHabitacion" text="Insertar Habitación" />
-                        <MenuItem fx:id="miEliminarHabitacion" mnemonicParsing="false" onAction="#eliminarHabitacion" text="Eliminar Habitación" />
-                    </items>
-                </ContextMenu>
+                <contextMenu>
+                    <ContextMenu>
+                        <items>
+                            <MenuItem fx:id="miInsertarHabitacion" mnemonicParsing="false" onAction="#anadirHabitacion" text="Insertar Habitación" />
+                            <MenuItem fx:id="miEliminarHabitacion" mnemonicParsing="false" onAction="#eliminarHabitacion" text="Eliminar Habitación" />
+                        </items>
+                    </ContextMenu>
+                </contextMenu>
             </TableView>
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="202.0" prefWidth="898.0">

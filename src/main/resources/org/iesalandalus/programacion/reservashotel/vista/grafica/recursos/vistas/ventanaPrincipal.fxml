@@ -1,39 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
-  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
-  All rights reserved. Use is subject to license terms.
-
-  This file is available and licensed under the following license:
-
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions
-  are met:
-
-  - Redistributions of source code must retain the above copyright
-    notice, this list of conditions and the following disclaimer.
-  - Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in
-    the documentation and/or other materials provided with the distribution.
-  - Neither the name of Oracle Corporation nor the names of its
-    contributors may be used to endorse or promote products derived
-    from this software without specific prior written permission.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
--->
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -54,15 +23,15 @@
       <menus>
         <Menu mnemonicParsing="false" text="Consultar">
           <items>
-            <MenuItem fx:id="btnHuespedes" mnemonicParsing="false" onAction="#abrirVentanaHuespedes" text="Huéspedes" />
-            <MenuItem fx:id="btnHabitaciones" mnemonicParsing="false" onAction="#abrirVentanaHabitaciones" text="Habitaciones" />
+            <MenuItem fx:id="miHuespedes" mnemonicParsing="false" onAction="#abrirVentanaHuespedes" text="Huéspedes" />
+            <MenuItem fx:id="miHabitaciones" mnemonicParsing="false" onAction="#abrirVentanaHabitaciones" text="Habitaciones" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Añadir">
           <items>
-            <MenuItem fx:id="btnAnadirHuesped" mnemonicParsing="false" onAction="#anadirHuespedMenu" text="Huésped" />
-            <MenuItem fx:id="btnAnadirHabitacion" mnemonicParsing="false" onAction="#anadirHabitacionMenu" text="Habitación" />
-            <MenuItem mnemonicParsing="false" text="Reserva" />
+            <MenuItem fx:id="miAnadirHuesped" mnemonicParsing="false" onAction="#anadirHuespedMenu" text="Huésped" />
+            <MenuItem fx:id="miAnadirHabitacion" mnemonicParsing="false" onAction="#anadirHabitacionMenu" text="Habitación" />
+            <MenuItem fx:id="miAnadirReserva" mnemonicParsing="false" onAction="#anadirReservaMenu" text="Reserva" />
           </items>
         </Menu>
             <Menu mnemonicParsing="false" text="Salir">
@@ -86,13 +55,24 @@
                         <TableView id="tvReservas" fx:id="tvReservas" layoutX="-1.0" layoutY="48.0" prefHeight="290.0" prefWidth="900.0">
                           <columns>
                             <TableColumn fx:id="tcHuesped" editable="false" prefWidth="200.0" text="Huésped" />
-                            <TableColumn fx:id="tcHabitacion" editable="false" prefWidth="140.0" style="-fx-alignment: CENTER;" text="Habitación" />
-                              <TableColumn fx:id="tcImporte" editable="false" prefWidth="70.0" sortable="false" style="-fx-alignment: CENTER;" text="Importe" />
-                              <TableColumn fx:id="tcFechaInicio" editable="false" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Fecha Inicio" />
-                              <TableColumn fx:id="tcFechaFin" editable="false" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Fecha Fin" />
-                              <TableColumn fx:id="tcCheckIn" editable="false" prefWidth="130.0" style="-fx-alignment: CENTER;" text="CheckIn" />
-                              <TableColumn fx:id="tcCheckOut" editable="false" prefWidth="130.0" style="-fx-alignment: CENTER;" text="CheckOut" />
+                            <TableColumn fx:id="tcHabitacion" editable="false" prefWidth="110.0" resizable="false" style="-fx-alignment: CENTER;" text="Habitación" />
+                              <TableColumn fx:id="tcNumeroPersonas" editable="false" prefWidth="75.0" resizable="false" sortable="false" style="-fx-alignment: CENTER;" text="Nº Personas" />
+                              <TableColumn fx:id="tcImporte" editable="false" prefWidth="70.0" resizable="false" sortable="false" style="-fx-alignment: CENTER;" text="Importe" />
+                              <TableColumn fx:id="tcFechaInicio" editable="false" prefWidth="100.0" resizable="false" style="-fx-alignment: CENTER;" text="Fecha Inicio" />
+                              <TableColumn fx:id="tcFechaFin" editable="false" prefWidth="100.0" resizable="false" style="-fx-alignment: CENTER;" text="Fecha Fin" />
+                              <TableColumn fx:id="tcCheckIn" editable="false" prefWidth="115.0" resizable="false" style="-fx-alignment: CENTER;" text="CheckIn" />
+                              <TableColumn fx:id="tcCheckOut" editable="false" prefWidth="115.0" resizable="false" style="-fx-alignment: CENTER;" text="CheckOut" />
                           </columns>
+                            <contextMenu>
+                                <ContextMenu>
+                                    <items>
+                                        <MenuItem fx:id="cmiAnadirReserva" mnemonicParsing="false" onAction="#anadirReserva" text="Añadir Reserva" />
+                                        <MenuItem fx:id="cmiEliminarReserva" mnemonicParsing="false" onAction="#eliminarReserva" text="Eliminar Reserva" />
+                                        <MenuItem fx:id="cmiRealizarCheckIn" mnemonicParsing="false" onAction="#realizarCheckIn" text="Realizar CheckIn" />
+                                        <MenuItem fx:id="cmiRealizarCheckOut" mnemonicParsing="false" onAction="#realizarCheckOut" text="Realizar CheckOut" />
+                                    </items>
+                                </ContextMenu>
+                            </contextMenu>
                         </TableView>
                      </children>
                   </AnchorPane>
@@ -206,6 +186,11 @@
                                                 <Insets left="5.0" right="5.0" />
                                              </GridPane.margin>
                                           </TextField>
+                                          <Button fx:id="btnAnadirReserva" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#anadirReserva" prefWidth="130.0" text="Añadir Reserva" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                             <GridPane.margin>
+                                                <Insets left="140.0" />
+                                             </GridPane.margin>
+                                          </Button>
                                           <Button fx:id="btnFiltrarPorHabitacion" alignment="CENTER" contentDisplay="CENTER" layoutX="285.0" layoutY="132.0" mnemonicParsing="false" onAction="#filtrarPorHabitacion" prefWidth="130.0" text="Filtrar por Habitación" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                              <GridPane.margin>
                                                 <Insets left="140.0" />

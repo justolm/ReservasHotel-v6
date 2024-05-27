@@ -1,7 +1,6 @@
 package org.iesalandalus.programacion.reservashotel.vista.grafica.controladores;
 
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -12,7 +11,6 @@ import org.iesalandalus.programacion.reservashotel.vista.grafica.VistaGrafica;
 import org.iesalandalus.programacion.reservashotel.vista.grafica.utilidades.Dialogos;
 
 import javax.naming.OperationNotSupportedException;
-import java.text.ParseException;
 
 public class ControladorVentanaAnadirHabitacion {
 
@@ -50,12 +48,6 @@ public class ControladorVentanaAnadirHabitacion {
         }
         cbTipoHabitacion.setValue(TipoHabitacion.SIMPLE.name());
     }
-
-    private void cargaOpcionesNumCamasIndividuales(){
-    //    ObservableList<Integer> opciones = cbNumCamasIndividuales.getItems();
-    //    for (int i = Doble.)
-    }
-
 
     @FXML
     private void initialize(){
@@ -184,9 +176,8 @@ public class ControladorVentanaAnadirHabitacion {
         }
     }
 
-
     @FXML
-    void anadirAHabitacion(ActionEvent event) {
+    void anadirAHabitacion() {
         String error = "";
         try {
             Habitacion habitacion;
@@ -197,7 +188,7 @@ public class ControladorVentanaAnadirHabitacion {
                 case "DOBLE" -> habitacion = new Doble(cbNumPlanta.getValue(),cbNumPuerta.getValue(),precio,cbNumCamasIndividuales.getValue(),cbNumCamasDobles.getValue());
                 case "TRIPLE" -> habitacion = new Triple(cbNumPlanta.getValue(),cbNumPuerta.getValue(),precio,cbNumBanos.getValue(),cbNumCamasIndividuales.getValue(),cbNumCamasDobles.getValue());
                 case "SUITE" -> {
-                    if (cbJacuzzi.equals("Sí")) {
+                    if (cbJacuzzi.getValue().equals("Sí")) {
                         tieneJacuzzi=true;
                     }
                     habitacion = new Suite(cbNumPlanta.getValue(),cbNumPuerta.getValue(),precio,cbNumBanos.getValue(),tieneJacuzzi);
@@ -216,8 +207,7 @@ public class ControladorVentanaAnadirHabitacion {
     }
 
     @FXML
-    void cancelarAHabitacion(ActionEvent event) {
+    void cancelarAHabitacion() {
         ((Stage) btnCancelarAHabitacion.getScene().getWindow()).close();
     }
-
 }

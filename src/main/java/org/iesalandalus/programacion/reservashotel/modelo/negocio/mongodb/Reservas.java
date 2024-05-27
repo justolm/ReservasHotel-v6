@@ -168,7 +168,7 @@ public class Reservas implements IReservas {
         Document docReserva = coleccionReservas.find().filter(and(eq(MongoDB.FECHA_INICIO_RESERVA,reserva.getFechaInicioReserva().format(MongoDB.FORMATO_DIA)),eq(MongoDB.HABITACION_IDENTIFICADOR,reserva.getHabitacion().getIdentificador()))).first();
         if (docReserva != null) {
             reserva.setCheckIn(fecha);
-            coleccionReservas.updateOne(Filters.eq(MongoDB.CHECKIN,docReserva.getString(MongoDB.CHECKIN)), Updates.set(MongoDB.CHECKIN,fecha.format(MongoDB.FORMATO_DIA_HORA)));
+            coleccionReservas.updateOne(Filters.and(eq(MongoDB.FECHA_INICIO_RESERVA,reserva.getFechaInicioReserva().format(MongoDB.FORMATO_DIA)),eq(MongoDB.HABITACION_IDENTIFICADOR,reserva.getHabitacion().getIdentificador())), Updates.set(MongoDB.CHECKIN,fecha.format(MongoDB.FORMATO_DIA_HORA)));
             System.out.println("CheckIn añadido a la reserva.");
         }
     }
@@ -192,7 +192,7 @@ public class Reservas implements IReservas {
         Document docReserva = coleccionReservas.find().filter(and(eq(MongoDB.FECHA_INICIO_RESERVA,reserva.getFechaInicioReserva().format(MongoDB.FORMATO_DIA)),eq(MongoDB.HABITACION_IDENTIFICADOR,reserva.getHabitacion().getIdentificador()))).first();
         if (docReserva != null) {
             reserva.setCheckIn(fecha);
-            coleccionReservas.updateOne(Filters.eq(MongoDB.CHECKOUT, docReserva.getString(MongoDB.CHECKOUT)), Updates.set(MongoDB.CHECKOUT, fecha.format(MongoDB.FORMATO_DIA_HORA)));
+            coleccionReservas.updateOne(Filters.and(eq(MongoDB.FECHA_INICIO_RESERVA,reserva.getFechaInicioReserva().format(MongoDB.FORMATO_DIA)),eq(MongoDB.HABITACION_IDENTIFICADOR,reserva.getHabitacion().getIdentificador())), Updates.set(MongoDB.CHECKOUT, fecha.format(MongoDB.FORMATO_DIA_HORA)));
             System.out.println("CheckOut añadido a la reserva.");
         }
     }

@@ -1,8 +1,6 @@
 package org.iesalandalus.programacion.reservashotel.vista.grafica.controladores;
 
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.iesalandalus.programacion.reservashotel.modelo.dominio.Huesped;
@@ -20,19 +18,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import javax.naming.OperationNotSupportedException;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.iesalandalus.programacion.reservashotel.vista.grafica.VistaGrafica.getInstancia;
-
-public class ControladorVentanaHuespedes implements KeyListener {
+public class ControladorVentanaHuespedes {
     private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @FXML private TableView<Huesped> tvHuespedes;
@@ -43,11 +36,17 @@ public class ControladorVentanaHuespedes implements KeyListener {
     @FXML private TableColumn<Huesped, String> tcTelefono;
     @FXML private TableColumn<Huesped, String> tcFechaNacimiento;
 
+    @FXML private MenuItem miInsertarHuesped;
+    @FXML private MenuItem miEliminarHuesped;
+
     @FXML private TextField tfBusquedaNombre;
     @FXML private TextField tfBusquedaDNI;
     @FXML private Button btnBuscarHuesped;
     @FXML private Button btnLimpiarHuesped;
     @FXML private Button btnVerReservasHuesped;
+    @FXML private Button btnAnadirHuesped;
+    @FXML private Button btnBorrarHuesped;
+
     @FXML ControladorVentanaPrincipal controladorVentanaPrincipalenHuespedes; // Para poder lanzar la búsqueda de reservas de un huésped de vuelta.
 
 
@@ -152,16 +151,24 @@ public class ControladorVentanaHuespedes implements KeyListener {
     }
 
     @FXML
-    void eliminarHuesped(ActionEvent event) throws OperationNotSupportedException {
-        Huesped huesped = tvHuespedes.getSelectionModel().getSelectedItem();
-        if (huesped != null && Dialogos.mostrarDialogoConfirmacion("Hotel Al-Andalus - Borrar huésped","¿Está seguro de eliminar al huésped seleccionado?")) {
-            VistaGrafica.getInstancia().getControlador().borrar(huesped);
-            coleccionHuespedes.remove(huesped);
-            obsHuespedes.setAll(coleccionHuespedes);
-            Dialogos.mostrarDialogoInformacion("Hotel Al-Andalus - Borrar huésped", "Huésped eliminado correctamente");
+    void eliminarHuesped(ActionEvent event) {
+        String error = "";
+        try {
+            Huesped huesped = tvHuespedes.getSelectionModel().getSelectedItem();
+            if (huesped != null && Dialogos.mostrarDialogoConfirmacion("Hotel Al-Andalus - Borrar huésped","¿Está seguro de eliminar al huésped seleccionado?")) {
+                VistaGrafica.getInstancia().getControlador().borrar(huesped);
+                coleccionHuespedes.remove(huesped);
+                obsHuespedes.setAll(coleccionHuespedes);
+                Dialogos.mostrarDialogoInformacion("Hotel Al-Andalus - Borrar huésped", "Huésped eliminado correctamente");
+            }
+            if (huesped == null) {
+                Dialogos.mostrarDialogoAdvertencia("Hotel Al-Andalus - Borrar huésped", "Debe seleccionar el huésped que desee eliminar.");
+            }
+        } catch (OperationNotSupportedException | ParseException | IllegalArgumentException | NullPointerException e) {
+            error=String.valueOf(e.getMessage());
         }
-        if (huesped == null) {
-            Dialogos.mostrarDialogoAdvertencia("Hotel Al-Andalus - Borrar huésped", "Debe seleccionar el huésped que desee eliminar.");
+        if (!error.isEmpty()) {
+            Dialogos.mostrarDialogoError("Hotel Al-Andalus - Borrar huésped", error);
         }
     }
 
@@ -203,34 +210,4 @@ public class ControladorVentanaHuespedes implements KeyListener {
     public void recibeControladorHuespedes(ControladorVentanaPrincipal controladorVentanaPrincipal) {
         controladorVentanaPrincipalenHuespedes = controladorVentanaPrincipal;
     }
-
-
-    // Pruebas para intentar buscar usando la tecla enter
-    @Override
-    public void keyTyped(KeyEvent e) {
-        if (e.getSource() == tfBusquedaDNI){
-            if (KeyEvent.VK_A == e.getKeyCode()){
-                System.out.println("conseguido1!");
-            }
-        }
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (e.getSource() == tfBusquedaDNI){
-            if (KeyEvent.VK_ESCAPE == e.getKeyCode()){
-                System.out.println("conseguido2!");
-            }
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-    //    if (e.getSource() == tfBusquedaDNI){
-            if (KeyEvent.VK_E == e.getKeyCode()){
-                System.out.println("conseguido3!");
-            }
-     //   }
-    }
-
 }

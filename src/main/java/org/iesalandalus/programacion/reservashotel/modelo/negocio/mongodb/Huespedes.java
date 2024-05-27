@@ -9,6 +9,7 @@ import org.bson.Document;
 import org.iesalandalus.programacion.reservashotel.modelo.dominio.Huesped;
 import org.iesalandalus.programacion.reservashotel.modelo.negocio.IHuespedes;
 import org.iesalandalus.programacion.reservashotel.modelo.negocio.mongodb.utilidades.MongoDB;
+import org.iesalandalus.programacion.reservashotel.vista.grafica.VistaGrafica;
 
 import javax.naming.OperationNotSupportedException;
 import java.text.ParseException;
@@ -57,12 +58,15 @@ public class Huespedes implements IHuespedes {
         return null;
     }
 
-    public void borrar(Huesped huesped) throws OperationNotSupportedException, NullPointerException{
+    public void borrar(Huesped huesped) throws OperationNotSupportedException, NullPointerException, ParseException, IllegalArgumentException {
         if (huesped == null)
             throw new NullPointerException("ERROR: No se puede borrar un huésped nulo.");
         Document docHuesped = null;
         if (coleccionHuespedes.countDocuments() > 0) { // Comprueba que existan huéspedes antes de intentar filtrarlas.
             docHuesped = coleccionHuespedes.find(Filters.eq(MongoDB.DNI,huesped.getDni())).first();
+        }
+        if (!VistaGrafica.getInstancia().getControlador().getReservas(huesped).isEmpty()) {
+            throw new IllegalArgumentException("ERROR: No se puede eliminar un huésped que tenga reservas.");
         }
         if (docHuesped != null){
             coleccionHuespedes.deleteOne(docHuesped);

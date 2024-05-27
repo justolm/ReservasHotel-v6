@@ -1,6 +1,5 @@
 package org.iesalandalus.programacion.reservashotel.vista.grafica.controladores;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,7 +11,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.iesalandalus.programacion.reservashotel.modelo.dominio.*;
@@ -40,8 +38,15 @@ public class ControladorVentanaHabitaciones {
     @FXML private TableColumn<Habitacion, String> tcJacuzzi;
     @FXML private TableColumn<Habitacion, String> tcPrecio;
 
+    @FXML private MenuItem miInsertarHabitacion;
+    @FXML private MenuItem miEliminarHabitacion;
+
     @FXML private TextField tfBusquedaIdentificador;
     @FXML private Button btnLimpiarIdentificador;
+    @FXML private Button btnAnadirHabitacion;
+    @FXML private Button btnBorrarHabitacion;
+    @FXML private Button btnVerReservasHabitacion;
+
     @FXML ControladorVentanaPrincipal controladorVentanaPrincipalenHabitaciones; // Para poder lanzar la búsqueda de reservas por habitación.
 
     private ObservableList<Habitacion> obsHabitaciones = FXCollections.observableArrayList();
@@ -56,7 +61,6 @@ public class ControladorVentanaHabitaciones {
     @FXML
     private void initialize() {
         String error = "";
-        String tipo="";
         try {
             cargaDatosHabitacion();
             tvHabitaciones.setPlaceholder(new Label("No hay habitaciones para mostrar."));
@@ -117,16 +121,24 @@ public class ControladorVentanaHabitaciones {
     }
 
     @FXML
-    void eliminarHabitacion(ActionEvent event) throws OperationNotSupportedException {
-        Habitacion habitacion = tvHabitaciones.getSelectionModel().getSelectedItem();
-        if (habitacion != null && Dialogos.mostrarDialogoConfirmacion("Hotel Al-Andalus - Borrar habitación","¿Está seguro de eliminar la habitación seleccionada?")) {
-            VistaGrafica.getInstancia().getControlador().borrar(habitacion);
-            coleccionHabitaciones.remove(habitacion);
-            obsHabitaciones.setAll(coleccionHabitaciones);
-            Dialogos.mostrarDialogoInformacion("Hotel Al-Andalus - Borrar habitación", "Habitación eliminada correctamente");
+    void eliminarHabitacion() {
+        String error = "";
+        try {
+            Habitacion habitacion = tvHabitaciones.getSelectionModel().getSelectedItem();
+            if (habitacion != null && Dialogos.mostrarDialogoConfirmacion("Hotel Al-Andalus - Borrar habitación","¿Está seguro de eliminar la habitación seleccionada?")) {
+                VistaGrafica.getInstancia().getControlador().borrar(habitacion);
+                coleccionHabitaciones.remove(habitacion);
+                obsHabitaciones.setAll(coleccionHabitaciones);
+                Dialogos.mostrarDialogoInformacion("Hotel Al-Andalus - Borrar habitación", "Habitación eliminada correctamente");
+            }
+            if (habitacion == null) {
+                Dialogos.mostrarDialogoAdvertencia("Hotel Al-Andalus - Borrar habitación", "Debe seleccionar la habitación que desee eliminar.");
+            }
+        } catch (OperationNotSupportedException | ParseException | IllegalArgumentException | NullPointerException e) {
+            error=String.valueOf(e.getMessage());
         }
-        if (habitacion == null) {
-            Dialogos.mostrarDialogoAdvertencia("Hotel Al-Andalus - Borrar habitación", "Debe seleccionar la habitación que desee eliminar.");
+        if (!error.isEmpty()) {
+            Dialogos.mostrarDialogoError("Hotel Al-Andalus - Borrar habitación", error);
         }
     }
 
@@ -156,13 +168,12 @@ public class ControladorVentanaHabitaciones {
     }
 
     @FXML
-    public void verReservas(ActionEvent event){
+    public void verReservas(){
         Habitacion habitacion = tvHabitaciones.getSelectionModel().getSelectedItem();
         if (habitacion != null && Dialogos.mostrarDialogoConfirmacion("Hotel Al-Andalus - Reservas habitación","¿Quiere buscar las reservas de la habitación seleccionada?")) {
             controladorVentanaPrincipalenHabitaciones.filtrarPorHabitacion(habitacion.getIdentificador());
             ((Stage) btnLimpiarIdentificador.getScene().getWindow()).close();
         }
-
     }
 
     @FXML
@@ -182,7 +193,7 @@ public class ControladorVentanaHabitaciones {
     }
 
     @FXML
-    void limpiarIdentificador (ActionEvent event) {
+    void limpiarIdentificador () {
         tfBusquedaIdentificador.clear();
         obsHabitaciones.setAll(coleccionHabitaciones);
     }

@@ -11,7 +11,7 @@ public interface IHuespedes {
     int getTamano();
     void insertar(Huesped huesped) throws OperationNotSupportedException, ParseException;
     Huesped buscar(Huesped huesped) throws ParseException;
-    void borrar(Huesped huesped) throws OperationNotSupportedException;
+    void borrar(Huesped huesped) throws OperationNotSupportedException, ParseException;
     void comenzar();
     void terminar();
 }

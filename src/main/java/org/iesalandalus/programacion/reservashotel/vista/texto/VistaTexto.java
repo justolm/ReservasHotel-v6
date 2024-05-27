@@ -95,7 +95,7 @@ public class VistaTexto extends Vista {
             huesped = Consola.getHuespedPorDni();
             getControlador().borrar(huesped);
             System.out.println("Huésped eliminado.");
-        } catch (NullPointerException | IllegalArgumentException | OperationNotSupportedException e) {
+        } catch (NullPointerException | IllegalArgumentException | OperationNotSupportedException | ParseException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -147,7 +147,7 @@ public class VistaTexto extends Vista {
             habitacion = Consola.leerHabitacionPorIdentificador();
             getControlador().borrar(habitacion);
             System.out.println("Habitación borrada.");
-        } catch (NullPointerException | IllegalArgumentException | OperationNotSupportedException e){
+        } catch (NullPointerException | IllegalArgumentException | OperationNotSupportedException | ParseException e){
             System.out.println(e.getMessage());
         }
     }

@@ -1,6 +1,5 @@
 package org.iesalandalus.programacion.reservashotel.vista.grafica.controladores;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -11,7 +10,6 @@ import org.iesalandalus.programacion.reservashotel.vista.grafica.VistaGrafica;
 import org.iesalandalus.programacion.reservashotel.vista.grafica.utilidades.Dialogos;
 
 import javax.naming.OperationNotSupportedException;
-import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 
 public class ControladorVentanaAnadirHuesped {
@@ -24,16 +22,15 @@ public class ControladorVentanaAnadirHuesped {
     @FXML private DatePicker dpFechaNacimientoAHuesped;
 
     @FXML
-    void anadirAHuesped(ActionEvent event) {
+    void anadirAHuesped() {
         String error = "";
-
         try {
             Huesped huesped = new Huesped(tfNombreAHuesped.getText(),tfDNIAHuesped.getText(),tfCorreoAHuesped.getText(),tfTelefonoAHuesped.getText(),dpFechaNacimientoAHuesped.getValue());
             VistaGrafica.getInstancia().getControlador().insertar(huesped);
             Dialogos.mostrarDialogoConfirmacion("Hotel Al-Andalus - Insertar huésped", "Huésped insertado correctamente.");
             ((Stage) btnAnadirAHuesped.getScene().getWindow()).close();
         } catch (OperationNotSupportedException | ParseException | IllegalArgumentException | NullPointerException er) {
-            error=String.valueOf(er.getMessage());
+            error = String.valueOf(er.getMessage());
         }
         if (!error.isEmpty()) {
             Dialogos.mostrarDialogoError("Hotel Al-Andalus - Insertar huésped", error);
@@ -41,7 +38,7 @@ public class ControladorVentanaAnadirHuesped {
     }
 
     @FXML
-    void cancelarAHuesped(ActionEvent event) {
+    void cancelarAHuesped() {
         ((Stage) btnCancelarAHuesped.getScene().getWindow()).close();
     }
 }

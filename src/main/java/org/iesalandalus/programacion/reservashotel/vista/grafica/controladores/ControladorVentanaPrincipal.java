@@ -17,13 +17,13 @@ import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.naming.OperationNotSupportedException;
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.iesalandalus.programacion.reservashotel.vista.grafica.VistaGrafica.getInstancia;
 
 public class ControladorVentanaPrincipal {
 
@@ -34,6 +34,7 @@ public class ControladorVentanaPrincipal {
 
     @FXML private TableColumn<Reserva, String> tcHuesped;
     @FXML private TableColumn<Reserva, String> tcHabitacion;
+    @FXML private TableColumn<Reserva, String> tcNumeroPersonas;
     @FXML private TableColumn<Reserva, String> tcImporte;
     @FXML private TableColumn<Reserva, String> tcFechaInicio;
     @FXML private TableColumn<Reserva, String> tcFechaFin;
@@ -53,8 +54,23 @@ public class ControladorVentanaPrincipal {
     @FXML private TextField tfBanos;
     @FXML private TextField tfJacuzzi;
 
+    @FXML private MenuItem miAcercaDe;
+    @FXML private MenuItem miAnadirHabitacion;
+    @FXML private MenuItem miAnadirHuesped;
+    @FXML private MenuItem miAnadirReserva;
+    @FXML private MenuItem miHabitaciones;
+    @FXML private MenuItem miHuespedes;
+    @FXML private MenuItem miSalir;
+
+    @FXML private MenuItem cmiAnadirReserva;
+    @FXML private MenuItem cmiEliminarReserva;
+    @FXML private MenuItem cmiRealizarCheckIn;
+    @FXML private MenuItem cmiRealizarCheckOut;
+
+    @FXML private Button btnAnadirReserva;
     @FXML private Button btnFiltrarPorHuesped;
     @FXML private Button btnFiltrarPorHabitacion;
+    @FXML private Button btnEliminarFiltro;
 
     // Para pasar información entre ventanas
     @FXML ControladorVentanaPrincipal controladorVentanaPrincipal;
@@ -68,7 +84,6 @@ public class ControladorVentanaPrincipal {
         obsReservas.setAll(coleccionReservas);
     }
 
-
     @FXML
     private void initialize() {
         controladorVentanaPrincipal=this;
@@ -77,6 +92,7 @@ public class ControladorVentanaPrincipal {
             tvReservas.setPlaceholder(new Label("No hay reservas para mostrar."));
             tcHuesped.setCellValueFactory(reserva -> new SimpleStringProperty(reserva.getValue().getHuesped().getNombre().concat(" - ").concat(reserva.getValue().getHuesped().getDni())));
             tcHabitacion.setCellValueFactory(reserva -> new SimpleStringProperty(reserva.getValue().getHabitacion().getIdentificador().concat(" - ").concat(reserva.getValue().getHabitacion().getClass().getSimpleName())));
+            tcNumeroPersonas.setCellValueFactory(reserva -> new SimpleStringProperty(Integer.toString(reserva.getValue().getNumeroPersonas())));
             tcImporte.setCellValueFactory(reserva -> new SimpleStringProperty(Double.toString(reserva.getValue().getPrecio())));
             tcFechaInicio.setCellValueFactory(reserva -> new SimpleStringProperty(reserva.getValue().getFechaInicioReserva().format(FORMATO_FECHA).toString()));
             tcFechaFin.setCellValueFactory(reserva -> new SimpleStringProperty(reserva.getValue().getFechaFinReserva().format(FORMATO_FECHA).toString()));
@@ -100,7 +116,7 @@ public class ControladorVentanaPrincipal {
     }
 
     // Para mostrar los datos al seleccionar una reserva
-    private void muestraReservaSeleccionada(Reserva valorNuevoReserva) {
+    private void muestraReservaSeleccionada(Reserva valorNuevoReserva) throws NullPointerException {
         System.out.println(valorNuevoReserva); // Sirve para mostrar en la consola la reserva seleccionada.
 
         // Mostramos los datos del huésped correspondiente a la reserva:
@@ -149,7 +165,7 @@ public class ControladorVentanaPrincipal {
     }
 
     @FXML
-    void filtrarPorHuesped(ActionEvent event) {
+    void filtrarPorHuesped() {
         List<Reserva> colecccionReservasFiltradaHuesped = new ArrayList<>();
         if (tfDNI.getText().isEmpty() || tfDNI.getText().isBlank()){
             obsReservas.setAll(coleccionReservas);
@@ -183,7 +199,7 @@ public class ControladorVentanaPrincipal {
     }
 
     @FXML
-    void filtrarPorHabitacion(ActionEvent event) {
+    void filtrarPorHabitacion() {
         List<Reserva> colecccionReservasFiltradaHabitacion = new ArrayList<>();
         if (tfIdentificador.getText().isEmpty() || tfIdentificador.getText().isBlank()){
             obsReservas.setAll(coleccionReservas);
@@ -216,29 +232,141 @@ public class ControladorVentanaPrincipal {
     }
 
     @FXML
-    void LimpiarFiltro(ActionEvent event) throws ParseException {
-        obsReservas.setAll(coleccionReservas);
+    void LimpiarFiltro() throws ParseException {
+        coleccionReservas.clear();
+        cargaDatosReservas();
     }
 
     @FXML
-    void anadirHuespedMenu(ActionEvent event) {
+    void eliminarReserva() {
+        String error = "";
+        try {
+            Reserva reserva = tvReservas.getSelectionModel().getSelectedItem();
+            if (reserva != null && Dialogos.mostrarDialogoConfirmacion("Hotel Al-Andalus - Borrar reserva","¿Está seguro de eliminar la reserva seleccionada?")) {
+                VistaGrafica.getInstancia().getControlador().borrar(reserva);
+                coleccionReservas.remove(reserva);
+                obsReservas.setAll(coleccionReservas);
+                Dialogos.mostrarDialogoInformacion("Hotel Al-Andalus - Borrar reserva", "Reserva eliminada correctamente");
+            }
+        } catch (OperationNotSupportedException | ParseException er) {
+            error=String.valueOf(er.getMessage());
+        }
+        if (!error.isEmpty()) {
+            Dialogos.mostrarDialogoError("Hotel Al-Andalus - Borrar reserva", error);
+        }
+    }
+
+    @FXML
+    void anadirReserva(ActionEvent event) {
+        FXMLLoader fxmlLoader2 = new FXMLLoader(LocalizadorRecursos.class.getResource("vistas/ventanaAnadirReserva.fxml"));
+        ControladorVentanaAnadirReserva c = fxmlLoader2.getController();
+        String error = "";
+        try {
+            Parent raiz = fxmlLoader2.load();
+            Scene escenaAR = new Scene(raiz,600,400);
+            Stage escenarioAnadirReserva = new Stage();
+            escenarioAnadirReserva.setResizable(false);
+            escenarioAnadirReserva.setScene(escenaAR);
+            escenarioAnadirReserva.initModality(Modality.APPLICATION_MODAL);
+            escenarioAnadirReserva.setTitle("Hotel Al-Andalus - Añadir Reserva");
+            escenarioAnadirReserva.showAndWait();
+            obsReservas.clear();
+            coleccionReservas.clear();
+            cargaDatosReservas();
+        } catch (IOException | ParseException e) {
+            error=String.valueOf(e.getMessage());
+        }
+        if (!error.isEmpty()) {
+            Dialogos.mostrarDialogoError("Hotel Al-Andalus - Añadir reserva", error);
+        }
+    }
+
+    @FXML
+    void realizarCheckIn(){
+        FXMLLoader fxmlLoader = new FXMLLoader(LocalizadorRecursos.class.getResource("vistas/ventanaCheckIn.fxml"));
+        ControladorVentanaCheckIn c = fxmlLoader.getController();
+        Reserva reservaCheckIn = tvReservas.getSelectionModel().getSelectedItem();
+        try {
+            Parent raiz = fxmlLoader.load();
+            Scene escena = new Scene(raiz,360,200);
+            Stage escenarioCheckIn = new Stage();
+            escenarioCheckIn.setResizable(false);
+            escenarioCheckIn.setScene(escena);
+            escenarioCheckIn.initModality(Modality.APPLICATION_MODAL);
+            escenarioCheckIn.setTitle("Hotel Al-Andalus - CheckIn");
+            ControladorVentanaCheckIn controladorVentanaCheckInInstancia=(ControladorVentanaCheckIn)fxmlLoader.getController();
+            controladorVentanaCheckInInstancia.recibirReservaCheckIn(reservaCheckIn);
+            escenarioCheckIn.showAndWait();
+            obsReservas.clear();
+            coleccionReservas.clear();
+            cargaDatosReservas();
+        } catch (IOException | ParseException | NullPointerException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @FXML
+    void realizarCheckOut(){
+        FXMLLoader fxmlLoader = new FXMLLoader(LocalizadorRecursos.class.getResource("vistas/ventanaCheckOut.fxml"));
+        ControladorVentanaCheckOut c = fxmlLoader.getController();
+        try {
+            Parent raiz = fxmlLoader.load();
+            Scene escena = new Scene(raiz,360,200);
+            Stage escenarioCheckOut = new Stage();
+            escenarioCheckOut.setResizable(false);
+            escenarioCheckOut.setScene(escena);
+            escenarioCheckOut.initModality(Modality.APPLICATION_MODAL);
+            escenarioCheckOut.setTitle("Hotel Al-Andalus - CheckOut");
+            ControladorVentanaCheckOut controladorVentanaCheckOutInstancia=(ControladorVentanaCheckOut)fxmlLoader.getController();
+            controladorVentanaCheckOutInstancia.recibeControladorCheckOut(controladorVentanaPrincipal);
+            escenarioCheckOut.showAndWait();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    void realizarCheckOut(LocalDateTime fechaHoraCheckOut) {
+        String error = "";
+        try {
+            Reserva reserva = tvReservas.getSelectionModel().getSelectedItem();
+            VistaGrafica.getInstancia().getControlador().realizarCheckout(reserva, fechaHoraCheckOut);
+            Dialogos.mostrarDialogoConfirmacion("Hotel Al-Andalus - Realizar CheckOut", "CheckOut registrado correctamente.");
+            obsReservas.clear();
+            coleccionReservas.clear();
+            cargaDatosReservas();
+        } catch (ParseException er) {
+            error = String.valueOf(er.getMessage());
+        }
+        if (!error.isEmpty()) {
+            Dialogos.mostrarDialogoError("Hotel Al-Andalus - Realizar CheckOut", error);
+        }
+    }
+
+    @FXML
+    void anadirHuespedMenu() {
         new ControladorVentanaHuespedes().anadirHuesped(new ActionEvent());
     }
 
     @FXML
-    void anadirHabitacionMenu(ActionEvent event) {
+    void anadirHabitacionMenu() {
         new ControladorVentanaHabitaciones().anadirHabitacion(new ActionEvent());
     }
 
     @FXML
-    void acercaDe(ActionEvent event) {
+    void anadirReservaMenu() {
+        new ControladorVentanaPrincipal().anadirReserva(new ActionEvent());
+    }
+
+    @FXML
+    void acercaDe() {
         Dialogos.mostrarDialogoInformacion("Hotel Al-Andalus - Acerca de...", "Esta tarea ha sido realizada por Justo del Saliente López Martínez.");
     }
 
     @FXML
     void salir(ActionEvent event) {
         if (Dialogos.mostrarDialogoConfirmacion("Hotel Al-Andalus","¿Confirma que desea cerrar la aplicación?")) {
-            getInstancia().terminar();
+            ((Stage) btnFiltrarPorHabitacion.getScene().getWindow()).close();
+            VistaGrafica.getInstancia().getControlador().terminar();
         }
         else {
             event.consume();
@@ -267,13 +395,7 @@ public class ControladorVentanaPrincipal {
     }
 
     @FXML
-    public void cargaHuespedBusqueda(String dni) {
-        filtrarPorHuesped(dni);
-        System.out.println(dni);
-    }
-
-    @FXML
-    void abrirVentanaHabitaciones(ActionEvent event){
+    void abrirVentanaHabitaciones(){
         FXMLLoader fxmlLoader = new FXMLLoader(LocalizadorRecursos.class.getResource("vistas/ventanaHabitaciones.fxml"));
         ControladorVentanaHabitaciones c = fxmlLoader.getController();
         try {
@@ -287,7 +409,6 @@ public class ControladorVentanaPrincipal {
             ControladorVentanaHabitaciones controladorVentanaHabitacionesInstancia=(ControladorVentanaHabitaciones)fxmlLoader.getController();
             controladorVentanaHabitacionesInstancia.recibeControladorHabitaciones(controladorVentanaPrincipal);
             escenarioHabitaciones.showAndWait();
-
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

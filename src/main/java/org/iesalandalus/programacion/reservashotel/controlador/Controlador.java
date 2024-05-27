@@ -9,6 +9,7 @@ import org.iesalandalus.programacion.reservashotel.vista.Vista;
 
 import javax.naming.OperationNotSupportedException;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class Controlador {
         return modelo.buscar(huesped);
     }
 
-    public void borrar(Huesped huesped) throws OperationNotSupportedException, NullPointerException {
+    public void borrar(Huesped huesped) throws OperationNotSupportedException, NullPointerException, ParseException, IllegalArgumentException {
         modelo.borrar(huesped);
     }
 
@@ -62,7 +63,7 @@ public class Controlador {
         return modelo.buscar(habitacion);
     }
 
-    public void borrar (Habitacion habitacion) throws OperationNotSupportedException, NullPointerException {
+    public void borrar (Habitacion habitacion) throws OperationNotSupportedException, NullPointerException, ParseException, IllegalArgumentException {
         modelo.borrar(habitacion);
     }
 
@@ -112,5 +113,9 @@ public class Controlador {
 
     public void realizarCheckout (Reserva reserva, LocalDateTime fecha) throws IllegalArgumentException, NullPointerException, ParseException {
         modelo.realizarCheckout(reserva, fecha);
+    }
+
+    public Habitacion consultarDisponibilidad(TipoHabitacion tipoHabitacion, LocalDate fechaInicioReserva, LocalDate fechaFinReserva) throws ParseException {
+        return modelo.consultarDisponibilidad(tipoHabitacion, fechaInicioReserva, fechaFinReserva);
     }
 }
