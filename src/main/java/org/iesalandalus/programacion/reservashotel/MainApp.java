@@ -31,6 +31,9 @@ public class MainApp {
             controlador.comenzar();
         } catch (NullPointerException | IllegalArgumentException | DateTimeException e){
             System.out.println(e.getMessage());
+        } catch (ArrayIndexOutOfBoundsException er) { // Para que, en caso de no tener parámetros, inicie igualmente sin dar error.
+            System.out.println(er.getMessage());
+            main(new String[]{"-fdmongodb", "-vGrafica"});
         }
     }
 
@@ -47,7 +50,7 @@ public class MainApp {
         }
         // Creo una opción por defecto si no recibe parámetros, que realmente debería de sustituir a su elección.
         else {
-            modelo = new Modelo(FactoriaFuenteDatos.MEMORIA);
+            modelo = new Modelo(FactoriaFuenteDatos.MONGODB);
         }
         return modelo;
     }

@@ -1,4 +1,4 @@
-# Tarea: Reservas Hotel V5
+# Tarea: Reservas Hotel V6
 ## Profesor: Andrés Rubio del Río
 ## Alumno: Justo López Martínez
 
