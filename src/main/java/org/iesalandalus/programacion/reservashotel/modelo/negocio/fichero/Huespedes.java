@@ -101,6 +101,9 @@ public class Huespedes implements IHuespedes {
     private void leerXML() {
         try {
             Document doc = UtilidadesXML.xmlToDom(RUTA_FICHERO);
+            if (doc == null) {
+                doc = UtilidadesXML.crearDomVacio(RAIZ);
+            }
             NodeList listadoHuespedes = doc.getElementsByTagName(HUESPED);
             for (int i = 0 ; i < listadoHuespedes.getLength() ; i++) {
                 Element element = (Element) listadoHuespedes.item(i);
@@ -128,7 +131,7 @@ public class Huespedes implements IHuespedes {
 
     private Element huespedToElement(Document doc, Huesped huesped) throws NullPointerException{
         if (doc == null || huesped == null){
-            throw new NullPointerException("ERROR: Se ha introducido un valor nulo.");
+            throw new NullPointerException("ERROR: Se ha introducido un componente nulo.");
         }
         Element elHuesped = doc.createElement(HUESPED);
         // DNI
