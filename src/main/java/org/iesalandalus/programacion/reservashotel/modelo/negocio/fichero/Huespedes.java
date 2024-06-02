@@ -122,11 +122,11 @@ public class Huespedes implements IHuespedes {
 
     private Huesped elementToHuesped(Element element){
         String nombre = element.getElementsByTagName(NOMBRE).item(0).getTextContent();
-        String Dni = element.getAttribute(DNI);
+        String dni = element.getAttribute(DNI);
         String correo = element.getElementsByTagName(CORREO).item(0).getTextContent();
         String telefono = element.getElementsByTagName(TELEFONO).item(0).getTextContent();
         String fechaNacimiento = element.getElementsByTagName(FECHA_NACIMIENTO).item(0).getTextContent();
-        return new Huesped(nombre,Dni,correo,telefono, LocalDate.parse(fechaNacimiento,FORMATO_FECHA));
+        return new Huesped(nombre,dni,correo,telefono, LocalDate.parse(fechaNacimiento,FORMATO_FECHA));
     }
 
     private Element huespedToElement(Document doc, Huesped huesped) throws NullPointerException{

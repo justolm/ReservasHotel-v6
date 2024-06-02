@@ -49,7 +49,7 @@ public class Habitaciones implements IHabitaciones {
     }
 
     private List<Habitacion> copiaProfundaHabitaciones() throws NullPointerException, IllegalArgumentException {
-        if (coleccionHabitaciones.isEmpty()){
+        if (coleccionHabitaciones.isEmpty()) {
             throw new NullPointerException("ERROR: No es posible copiar una colección vacía");
         }
         List<Habitacion> copiaProfundaHabitaciones = new ArrayList<>();
@@ -74,7 +74,7 @@ public class Habitaciones implements IHabitaciones {
     }
 
     public List<Habitacion> get(TipoHabitacion tipoHabitacion) throws NullPointerException{
-        if (tipoHabitacion==null){
+        if (tipoHabitacion == null){
             throw new NullPointerException("ERROR: El tipo de habitación no puede estar vacío.");
         }
         if (coleccionHabitaciones.isEmpty()){
@@ -120,7 +120,7 @@ public class Habitaciones implements IHabitaciones {
     }
 
     public void insertar (Habitacion habitacion) throws NullPointerException, OperationNotSupportedException {
-        if (habitacion==null){
+        if (habitacion == null){
             throw new NullPointerException("ERROR: No se puede insertar una habitación nula.");
         }
         if (coleccionHabitaciones.contains(habitacion)){
@@ -130,7 +130,7 @@ public class Habitaciones implements IHabitaciones {
     }
 
     public Habitacion buscar(Habitacion habitacion) throws NullPointerException{
-        if (habitacion==null)
+        if (habitacion == null)
             throw new NullPointerException("ERROR: No se puede buscar una habitación nula.");
         for(int i = 0; i < getTamano(); i++){
             if (coleccionHabitaciones.get(i).equals(habitacion)){
@@ -141,7 +141,7 @@ public class Habitaciones implements IHabitaciones {
     }
 
     public void borrar (Habitacion habitacion) throws OperationNotSupportedException, NullPointerException {
-        if (habitacion==null)
+        if (habitacion == null)
             throw new NullPointerException("ERROR: No se puede borrar una habitación nula.");
         if (coleccionHabitaciones.contains(habitacion)){
             coleccionHabitaciones.remove(habitacion);
