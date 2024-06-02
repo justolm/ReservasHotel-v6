@@ -334,7 +334,7 @@ public class ControladorVentanaPrincipal {
             obsReservas.clear();
             coleccionReservas.clear();
             cargaDatosReservas();
-        } catch (ParseException er) {
+        } catch (ParseException |IllegalArgumentException | NullPointerException er) {
             error = String.valueOf(er.getMessage());
         }
         if (!error.isEmpty()) {

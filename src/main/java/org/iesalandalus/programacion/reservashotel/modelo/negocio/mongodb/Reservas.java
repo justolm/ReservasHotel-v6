@@ -189,6 +189,9 @@ public class Reservas implements IReservas {
         else if (fecha.isAfter(reserva.getFechaFinReserva().atStartOfDay().plusDays(1))) {
             throw new IllegalArgumentException("ERROR: No se puede realizar el CheckOut en una fecha posterior al final de la reserva.");
         }
+        else if (fecha.isAfter(reserva.getFechaFinReserva().atStartOfDay().plusHours(12))) {
+            throw new IllegalArgumentException("ERROR: No se puede realizar el CheckOut después de las 12.");
+        }
         Document docReserva = coleccionReservas.find().filter(and(eq(MongoDB.FECHA_INICIO_RESERVA,reserva.getFechaInicioReserva().format(MongoDB.FORMATO_DIA)),eq(MongoDB.HABITACION_IDENTIFICADOR,reserva.getHabitacion().getIdentificador()))).first();
         if (docReserva != null) {
             reserva.setCheckIn(fecha);
