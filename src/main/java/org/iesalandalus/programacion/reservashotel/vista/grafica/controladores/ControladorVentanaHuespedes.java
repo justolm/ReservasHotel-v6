@@ -49,7 +49,6 @@ public class ControladorVentanaHuespedes {
 
     @FXML ControladorVentanaPrincipal controladorVentanaPrincipalenHuespedes; // Para poder lanzar la búsqueda de reservas de un huésped de vuelta.
 
-
     private ObservableList<Huesped> obsHuespedes = FXCollections.observableArrayList();
 
     List<Huesped> coleccionHuespedes = new ArrayList<>();
@@ -75,8 +74,9 @@ public class ControladorVentanaHuespedes {
             tcFechaNacimiento.setCellValueFactory(huesped -> new SimpleStringProperty(huesped.getValue().getFechaNacimiento().format(FORMATO_FECHA).toString()));
             tvHuespedes.getSelectionModel().selectedItemProperty().addListener((observableValue, valorAnterior, valorNuevo) -> muestraHuespedSeleccionado(valorNuevo));
             tvHuespedes.setItems(obsHuespedes);
-        } catch (ParseException e) {
+        } catch (ParseException | IllegalArgumentException | NullPointerException e) {
             error=String.valueOf(e.getMessage());
+            System.out.println(e.getMessage());
         }
         if (!error.isEmpty()) {
             Dialogos.mostrarDialogoError("Hotel Al-Andalus - Huéspedes", error);

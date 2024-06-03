@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Huespedes>
+    <Huesped Dni="45596798B">
+        <Nombre>Justo López</Nombre>
+        <Correo>justolm@gmail.com</Correo>
+        <Telefono>666619806</Telefono>
+        <FechaNacimiento>27/05/2024</FechaNacimiento>
+    </Huesped>
+    <Huesped Dni="11223344B">
+        <Nombre>Merche Des</Nombre>
+        <Correo>merch@ed.es</Correo>
+        <Telefono>654321987</Telefono>
+        <FechaNacimiento>27/05/2024</FechaNacimiento>
+    </Huesped>
+    <Huesped Dni="11111111H">
+        <Nombre>Noe Lilla</Nombre>
+        <Correo>noe@lilla.es</Correo>
+        <Telefono>650476674</Telefono>
+        <FechaNacimiento>27/05/2024</FechaNacimiento>
+    </Huesped>
+</Huespedes>

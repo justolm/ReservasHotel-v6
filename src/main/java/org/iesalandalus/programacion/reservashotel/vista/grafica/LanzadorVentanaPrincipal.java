@@ -36,6 +36,7 @@ public class LanzadorVentanaPrincipal extends Application {
     private void confirmarSalida(Stage escenario, WindowEvent e)
     {
         if (Dialogos.mostrarDialogoConfirmacion("Reservas Hotel", "¿Estas seguro que quieres salirte de la aplicación?")) {
+            VistaGrafica.getInstancia().getControlador().terminar();
             escenario.close();
         }
         else

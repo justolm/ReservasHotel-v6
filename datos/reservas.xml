@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Reservas>
+    <Reserva Dni="11111111H" Planta="3" Puerta="6">
+        <Regimen>PENSION_COMPLETA</Regimen>
+        <FechaInicioReserva>03/06/2024</FechaInicioReserva>
+        <FechaFinReserva>05/06/2024</FechaFinReserva>
+        <Personas>2</Personas>
+        <FechaCheckin>03/06/2024 15:29</FechaCheckin>
+        <FechaCheckout>04/06/2024 00:05</FechaCheckout>
+        <Precio>360.0</Precio>
+    </Reserva>
+    <Reserva Dni="45596798B" Planta="3" Puerta="6">
+        <Regimen>PENSION_COMPLETA</Regimen>
+        <FechaInicioReserva>13/06/2024</FechaInicioReserva>
+        <FechaFinReserva>16/06/2024</FechaFinReserva>
+        <Personas>2</Personas>
+        <FechaCheckin/>
+        <FechaCheckout/>
+        <Precio>540.0</Precio>
+    </Reserva>
+    <Reserva Dni="45596798B" Planta="1" Puerta="1">
+        <Regimen>ALOJAMIENTO_DESAYUNO</Regimen>
+        <FechaInicioReserva>03/06/2024</FechaInicioReserva>
+        <FechaFinReserva>05/06/2024</FechaFinReserva>
+        <Personas>1</Personas>
+        <FechaCheckin/>
+        <FechaCheckout/>
+        <Precio>120.0</Precio>
+    </Reserva>
+    <Reserva Dni="11223344B" Planta="1" Puerta="3">
+        <Regimen>SOLO_ALOJAMIENTO</Regimen>
+        <FechaInicioReserva>12/06/2024</FechaInicioReserva>
+        <FechaFinReserva>14/06/2024</FechaFinReserva>
+        <Personas>2</Personas>
+        <FechaCheckin/>
+        <FechaCheckout/>
+        <Precio>112.0</Precio>
+    </Reserva>
+    <Reserva Dni="45596798B" Planta="1" Puerta="1">
+        <Regimen>SOLO_ALOJAMIENTO</Regimen>
+        <FechaInicioReserva>05/06/2024</FechaInicioReserva>
+        <FechaFinReserva>07/06/2024</FechaFinReserva>
+        <Personas>1</Personas>
+        <FechaCheckin/>
+        <FechaCheckout/>
+        <Precio>90.0</Precio>
+    </Reserva>
+    <Reserva Dni="45596798B" Planta="1" Puerta="3">
+        <Regimen>MEDIA_PENSION</Regimen>
+        <FechaInicioReserva>18/07/2024</FechaInicioReserva>
+        <FechaFinReserva>20/07/2024</FechaFinReserva>
+        <Personas>2</Personas>
+        <FechaCheckin/>
+        <FechaCheckout/>
+        <Precio>232.0</Precio>
+    </Reserva>
+</Reservas>

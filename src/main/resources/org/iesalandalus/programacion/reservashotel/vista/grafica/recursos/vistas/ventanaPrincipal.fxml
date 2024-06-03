@@ -52,16 +52,17 @@
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                      <children>
-                        <TableView id="tvReservas" fx:id="tvReservas" layoutX="-1.0" layoutY="48.0" prefHeight="290.0" prefWidth="900.0">
+                        <TableView id="tvReservas" fx:id="tvReservas" layoutX="-1.0" prefHeight="338.0" prefWidth="900.0">
                           <columns>
                             <TableColumn fx:id="tcHuesped" editable="false" prefWidth="200.0" text="Huésped" />
-                            <TableColumn fx:id="tcHabitacion" editable="false" prefWidth="110.0" resizable="false" style="-fx-alignment: CENTER;" text="Habitación" />
+                            <TableColumn fx:id="tcHabitacion" editable="false" prefWidth="100.0" resizable="false" style="-fx-alignment: CENTER;" text="Habitación" />
                               <TableColumn fx:id="tcNumeroPersonas" editable="false" prefWidth="75.0" resizable="false" sortable="false" style="-fx-alignment: CENTER;" text="Nº Personas" />
-                              <TableColumn fx:id="tcImporte" editable="false" prefWidth="70.0" resizable="false" sortable="false" style="-fx-alignment: CENTER;" text="Importe" />
-                              <TableColumn fx:id="tcFechaInicio" editable="false" prefWidth="100.0" resizable="false" style="-fx-alignment: CENTER;" text="Fecha Inicio" />
-                              <TableColumn fx:id="tcFechaFin" editable="false" prefWidth="100.0" resizable="false" style="-fx-alignment: CENTER;" text="Fecha Fin" />
-                              <TableColumn fx:id="tcCheckIn" editable="false" prefWidth="115.0" resizable="false" style="-fx-alignment: CENTER;" text="CheckIn" />
-                              <TableColumn fx:id="tcCheckOut" editable="false" prefWidth="115.0" resizable="false" style="-fx-alignment: CENTER;" text="CheckOut" />
+                              <TableColumn fx:id="tcImporte" editable="false" prefWidth="65.0" resizable="false" sortable="false" style="-fx-alignment: CENTER;" text="Importe" />
+                              <TableColumn fx:id="tcFechaInicio" editable="false" prefWidth="95.0" resizable="false" style="-fx-alignment: CENTER;" text="Fecha Inicio" />
+                              <TableColumn fx:id="tcFechaFin" editable="false" prefWidth="95.0" resizable="false" style="-fx-alignment: CENTER;" text="Fecha Fin" />
+                              <TableColumn fx:id="tcCheckIn" editable="false" prefWidth="110.0" resizable="false" style="-fx-alignment: CENTER;" text="CheckIn" />
+                              <TableColumn fx:id="tcCheckOut" editable="false" prefWidth="110.0" resizable="false" style="-fx-alignment: CENTER;" text="CheckOut" />
+                              <TableColumn fx:id="tcRegimen" editable="false" prefWidth="45.0" resizable="false" sortable="false" style="-fx-alignment: CENTER;" text="Rég." />
                           </columns>
                             <contextMenu>
                                 <ContextMenu>

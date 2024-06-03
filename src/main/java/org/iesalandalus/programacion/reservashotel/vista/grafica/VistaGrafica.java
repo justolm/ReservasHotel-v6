@@ -1,6 +1,5 @@
 package org.iesalandalus.programacion.reservashotel.vista.grafica;
 
-import org.iesalandalus.programacion.reservashotel.controlador.Controlador;
 import org.iesalandalus.programacion.reservashotel.vista.Vista;
 
 public class VistaGrafica extends Vista {
@@ -22,6 +21,7 @@ public class VistaGrafica extends Vista {
 
     @Override
     public void terminar() {
-        getControlador().terminar();
+        System.out.println("La vista ha finalizado.");
+        System.exit(0);
     }
 }

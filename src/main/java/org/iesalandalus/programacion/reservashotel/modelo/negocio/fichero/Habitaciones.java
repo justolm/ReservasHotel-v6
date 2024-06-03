@@ -34,6 +34,7 @@ public class Habitaciones implements IHabitaciones {
 
     public Habitaciones() {
         coleccionHabitaciones = new ArrayList<>();
+        comenzar();
     }
 
     public List<Habitacion> get() throws NullPointerException, IllegalArgumentException {
@@ -49,7 +50,7 @@ public class Habitaciones implements IHabitaciones {
     }
 
     private List<Habitacion> copiaProfundaHabitaciones() throws NullPointerException, IllegalArgumentException {
-        if (coleccionHabitaciones.isEmpty()) {
+        if (coleccionHabitaciones == null) {
             throw new NullPointerException("ERROR: No es posible copiar una colección vacía");
         }
         List<Habitacion> copiaProfundaHabitaciones = new ArrayList<>();
@@ -186,7 +187,7 @@ public class Habitaciones implements IHabitaciones {
         int planta = Integer.parseInt(element.getElementsByTagName(PLANTA).item(0).getTextContent());
         int puerta = Integer.parseInt(element.getElementsByTagName(PUERTA).item(0).getTextContent());
         double precio = Double.parseDouble(element.getElementsByTagName(PRECIO).item(0).getTextContent());
-        TipoHabitacion tipoHabitacion = TipoHabitacion.valueOf(element.getAttribute(TIPO));
+        String tipoHabitacion = element.getAttribute(TIPO);
         switch (tipoHabitacion) {
             case SIMPLE -> {
                 return new Simple(planta, puerta, precio);
@@ -221,7 +222,7 @@ public class Habitaciones implements IHabitaciones {
         // Identificador
         elHabitacion.setAttribute(IDENTIFICADOR, habitacion.getIdentificador());
         // Tipo
-        elHabitacion.setAttribute(TIPO,habitacion.getClass().getName());
+        elHabitacion.setAttribute(TIPO,habitacion.getClass().getSimpleName());
         // Planta
         Element elPlanta = doc.createElement(PLANTA);
         elPlanta.appendChild(doc.createTextNode(String.valueOf(habitacion.getPlanta())));
@@ -230,6 +231,11 @@ public class Habitaciones implements IHabitaciones {
         Element elPuerta = doc.createElement(PUERTA);
         elPuerta.appendChild(doc.createTextNode(String.valueOf(habitacion.getPuerta())));
         elHabitacion.appendChild(elPuerta);
+        // Precio
+        Element elPrecio = doc.createElement(PRECIO);
+        elPrecio.appendChild(doc.createTextNode(String.valueOf(habitacion.getPrecio())));
+        elHabitacion.appendChild(elPrecio);
+        // Resto de parámetros específicos del resto de habitaciones
         switch (habitacion.getClass().getSimpleName()){
             case SIMPLE -> {} // No hay que añadir nada específico
             case DOBLE -> {

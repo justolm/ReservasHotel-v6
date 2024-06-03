@@ -29,6 +29,7 @@ public class Huespedes implements IHuespedes {
 
     public Huespedes() {
         coleccionHuespedes = new ArrayList<>();
+        comenzar();
     }
 
     public static Huespedes getInstancia() {

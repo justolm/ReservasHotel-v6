@@ -107,7 +107,7 @@ public class ControladorVentanaHabitaciones {
             tcPrecio.setCellValueFactory(habitacion -> new SimpleDoubleProperty(habitacion.getValue().getPrecio()).asString());
             tvHabitaciones.getSelectionModel().selectedItemProperty().addListener((observableValue, valorViejo, valorNuevo) -> muestraHabitacionSeleccionada(valorNuevo));
             tvHabitaciones.setItems(obsHabitaciones);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NullPointerException e) {
             error=String.valueOf(e.getMessage());
             System.out.println(e.getMessage());
         }

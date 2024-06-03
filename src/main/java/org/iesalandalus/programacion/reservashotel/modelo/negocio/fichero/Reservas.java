@@ -35,6 +35,7 @@ public class Reservas implements IReservas {
 
     public Reservas() {
         coleccionReservas=new ArrayList<>();
+        comenzar();
     }
 
     public List<Reserva> get() {
@@ -241,9 +242,9 @@ public class Reservas implements IReservas {
         Habitacion habitacionIdentificador = new Simple(planta, puerta, Simple.MIN_PRECIO_HABITACION);
         Habitacion habitacion = Habitaciones.getInstancia().buscar(habitacionIdentificador);
         Reserva reserva = new  Reserva(huesped, habitacion, regimen, LocalDate.parse(fechaInicioReserva,FORMATO_FECHA), LocalDate.parse(fechaFinReserva,FORMATO_FECHA), personas);
-        if (fechaCheckin != null) {
+        if (fechaCheckin != null && !fechaCheckin.isBlank()) {
             reserva.setCheckIn(LocalDateTime.parse(fechaCheckin,FORMATO_FECHA_HORA));
-            if (fechaCheckout != null) {
+            if (fechaCheckout != null && !fechaCheckout.isBlank()) {
                 reserva.setCheckOut(LocalDateTime.parse(fechaCheckout,FORMATO_FECHA_HORA));
             }
         }
@@ -261,28 +262,36 @@ public class Reservas implements IReservas {
         elReserva.setAttribute(PLANTA_HABITACION, String.valueOf(reserva.getHabitacion().getPlanta()));
         elReserva.setAttribute(PUERTA_HABITACION, String.valueOf(reserva.getHabitacion().getPuerta()));
         // Regimen
-        Element elRegimen = doc.createElement(RESERVA);
-        elRegimen.appendChild(doc.createTextNode(String.valueOf(reserva.getRegimen())));
+        Element elRegimen = doc.createElement(REGIMEN);
+        elRegimen.appendChild(doc.createTextNode(reserva.getRegimen().name()));
         elReserva.appendChild(elRegimen);
         // Fecha inicio reserva
         Element elFechaInicio = doc.createElement(FECHA_INICIO_RESERVA);
-        elFechaInicio.appendChild(doc.createTextNode(String.valueOf(reserva.getFechaInicioReserva())));
+        elFechaInicio.appendChild(doc.createTextNode(reserva.getFechaInicioReserva().format(FORMATO_FECHA)));
         elReserva.appendChild(elFechaInicio);
         // Fecha fin reserva
         Element elFechaFin = doc.createElement(FECHA_FIN_RESERVA);
-        elFechaFin.appendChild(doc.createTextNode(String.valueOf(reserva.getFechaFinReserva())));
+        elFechaFin.appendChild(doc.createTextNode(reserva.getFechaFinReserva().format(FORMATO_FECHA)));
         elReserva.appendChild(elFechaFin);
         // Número de personas
         Element elPersonas = doc.createElement(NUMERO_PERSONAS);
         elPersonas.appendChild(doc.createTextNode(String.valueOf(reserva.getNumeroPersonas())));
         elReserva.appendChild(elPersonas);
         // CheckIn
+        String checkIn = null;
         Element elCheckin = doc.createElement(CHECKIN);
-        elCheckin.setAttribute(CHECKIN, String.valueOf(reserva.getCheckIn()));
+        if (reserva.getCheckIn() != null) {
+            checkIn = reserva.getCheckIn().format(FORMATO_FECHA_HORA);
+        }
+        elCheckin.appendChild(doc.createTextNode(checkIn));
         elReserva.appendChild(elCheckin);
         // CheckOut
+        String checkOut = null;
         Element elCheckout = doc.createElement(CHECKOUT);
-        elCheckout.setAttribute(CHECKOUT, String.valueOf(reserva.getCheckOut()));
+        if (reserva.getCheckOut() != null) {
+            checkOut = reserva.getCheckOut().format(FORMATO_FECHA_HORA);
+        }
+        elCheckout.appendChild(doc.createTextNode(checkOut));
         elReserva.appendChild(elCheckout);
         // Precio
         Element elPrecio = doc.createElement(PRECIO);

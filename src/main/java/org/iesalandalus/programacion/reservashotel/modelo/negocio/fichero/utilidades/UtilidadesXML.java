@@ -1,5 +1,6 @@
 package org.iesalandalus.programacion.reservashotel.modelo.negocio.fichero.utilidades;
 
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -12,8 +13,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.IOException;
 
 
 public class UtilidadesXML {
@@ -42,6 +42,24 @@ public class UtilidadesXML {
         try {
             // 1º Creamos una instancia de la clase File para acceder al archivo donde guardaremos el XML.
             File f=new File(CaminoAlArchivoXML);
+            File carpeta = new File(f.getParent());
+            if (!f.exists()) {
+                if (!carpeta.exists()) {
+                    if (carpeta.mkdir()) {
+                        System.out.println("Carpeta creada con éxito.");
+                    } else {
+                        System.out.println("ERROR: No se ha podido crear la carpeta.");
+                    }
+                } else {
+                    System.out.println("La carpeta existe." + carpeta.getAbsolutePath());
+                }
+                if (f.createNewFile()) {
+                    throw new IOException("Archivo creado con éxito.");
+                }
+                else {
+                    System.out.println("ERROR: No se ha podido crear el archivo.");
+                }
+            }
             //2º Creamos una nueva instancia del transformador a través de la fábrica de transformadores.
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             //3º Establecemos algunas opciones de salida, como por ejemplo, la codificación de salida.
@@ -53,8 +71,11 @@ public class UtilidadesXML {
             DOMSource source = new DOMSource(doc);
             //6º Realizamos la transformación.
             transformer.transform(source, result);
-        } catch (TransformerException er) {
+        } catch (TransformerException | DOMException er) {
+            System.out.println(er.getMessage());
             System.out.println("¡Error! No se ha podido llevar a cabo la transformación.");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -68,7 +89,7 @@ public class UtilidadesXML {
             d.appendChild(d.createElement(etiquetaRaiz));
             return d;
         } catch (ParserConfigurationException er) {
-            Logger.getLogger(UtilidadesXML.class.getName()).log(Level.SEVERE, null, er);
+            System.out.println(er.getMessage());
         }
         return d ;
     }

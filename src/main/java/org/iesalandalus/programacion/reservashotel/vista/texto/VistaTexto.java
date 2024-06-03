@@ -51,7 +51,6 @@ public class VistaTexto extends Vista {
     @Override
     public void terminar() {
         System.out.println("Final de la ejecución.");
-        getControlador().terminar();
     }
 
     public void insertarHuesped() {

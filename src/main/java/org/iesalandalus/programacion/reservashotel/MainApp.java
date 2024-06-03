@@ -8,12 +8,9 @@ import org.iesalandalus.programacion.reservashotel.modelo.Modelo;
 import org.iesalandalus.programacion.reservashotel.vista.FactoriaVista;
 import org.iesalandalus.programacion.reservashotel.vista.Vista;
 import org.iesalandalus.programacion.reservashotel.vista.texto.VistaTexto;
-import org.iesalandalus.programacion.reservashotel.vista.grafica.VistaGrafica;
 import org.iesalandalus.programacion.reservashotel.vista.texto.Opcion;
 
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.time.DateTimeException;
 
 
@@ -41,12 +38,16 @@ public class MainApp {
         String arg = argumentos[0];
         String memoria = "-fdmemoria";
         String mongoDB = "-fdmongodb";
+        String fichero = "-fdfichero";
         IModelo modelo;
         if (arg.contains(memoria)){
             modelo = new Modelo(FactoriaFuenteDatos.MEMORIA);
         }
         else if (arg.contains(mongoDB)) {
             modelo = new Modelo(FactoriaFuenteDatos.MONGODB);
+        }
+        else if (arg.contains(fichero)) {
+            modelo = new Modelo(FactoriaFuenteDatos.FICHERO);
         }
         // Creo una opción por defecto si no recibe parámetros, que realmente debería de sustituir a su elección.
         else {

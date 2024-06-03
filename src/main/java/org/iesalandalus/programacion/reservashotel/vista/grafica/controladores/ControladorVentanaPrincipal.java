@@ -40,6 +40,7 @@ public class ControladorVentanaPrincipal {
     @FXML private TableColumn<Reserva, String> tcFechaFin;
     @FXML private TableColumn<Reserva, String> tcCheckIn;
     @FXML private TableColumn<Reserva, String> tcCheckOut;
+    @FXML private TableColumn<Reserva, String> tcRegimen;
 
     @FXML private TextField tfNombre;
     @FXML private TextField tfDNI;
@@ -107,6 +108,15 @@ public class ControladorVentanaPrincipal {
                     return  new SimpleStringProperty(reserva.getValue().getCheckOut().format(FORMATO_FECHA_HORA).toString());
                 }
                 else return new SimpleStringProperty(" - ");
+            });
+            tcRegimen.setCellValueFactory(reserva -> {
+                return switch (reserva.getValue().getRegimen().name()) {
+                    case "SOLO_ALOJAMIENTO" -> new SimpleStringProperty("\uD83D\uDECC");
+                    case "ALOJAMIENTO_DESAYUNO" -> new SimpleStringProperty("☕");
+                    case "MEDIA_PENSION" -> new SimpleStringProperty("\uD83C\uDF7D");
+                    case "PENSION_COMPLETA" -> new SimpleStringProperty("\uD83E\uDD42");
+                    default -> new SimpleStringProperty("");
+                };
             });
             tvReservas.getSelectionModel().selectedItemProperty().addListener(((observableValue, valorAnteriorReserva, valorNuevoReserva) -> muestraReservaSeleccionada(valorNuevoReserva)));
             tvReservas.setItems(obsReservas);
@@ -365,8 +375,8 @@ public class ControladorVentanaPrincipal {
     @FXML
     void salir(ActionEvent event) {
         if (Dialogos.mostrarDialogoConfirmacion("Hotel Al-Andalus","¿Confirma que desea cerrar la aplicación?")) {
-            ((Stage) btnFiltrarPorHabitacion.getScene().getWindow()).close();
             VistaGrafica.getInstancia().getControlador().terminar();
+            ((Stage) btnFiltrarPorHabitacion.getScene().getWindow()).close();
         }
         else {
             event.consume();
